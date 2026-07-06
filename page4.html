@@ -11,7 +11,22 @@
 <body>
   <img class="navbar" src="assets/elements/logo.png" alt="icon 1">
   <img class="title" src="assets/elements/drawOnTheMargema.png" alt="icon 1">
- 
+ <button id="infoBtn" class="infoBtn">i</button>
+
+<div id="infoPopup" class="infoPopup">
+
+    <div class="infoBox">
+
+          <p>
+             כמו שאנו כותבים על המרגמות לפני שיגור, בביסלח אפשר לעשות זאת גם דיגיטלית. ציירו / כתבו על המרגמה ושלחו (שגרו) לאנשים שאתם אוהבים בעזרת כפתור השיתוף מצד שמאל למטה. בהצלחה!
+        </p>
+                <button id="closeInfo">סגור</button>
+
+
+
+    </div>
+
+</div>
  <div class="drawArea">
 
     <img id="baseImage" src="assets/elements/margema.png">
@@ -92,7 +107,7 @@
       </svg>
 
     </button>
-<div class="inst">צייר על המרגמה ושגר אותה למישהו שאתה אוהב!</div>
+<!-- <div class="inst">צייר על המרגמה ושגר אותה למישהו שאתה אוהב!</div> -->
     <div id="overlay"></div>
 
     <nav id="sideMenu">
@@ -110,6 +125,14 @@
     </nav>
 </body>
 <script>
+    window.addEventListener("load", () => {
+    const hasVisited = localStorage.getItem("infoSeen");
+
+    if (!hasVisited) {
+        infoPopup.classList.add("show");
+        localStorage.setItem("infoSeen", "true");
+    }
+});
   const menuBtn =
     document.getElementById("menuBtn");
 
@@ -256,10 +279,13 @@ out.height=canvas.height;
 
 const octx=out.getContext("2d");
 
+/* רקע לבן חובה */
+octx.fillStyle="#fff";
+octx.fillRect(0,0,out.width,out.height);
+
 const img=document.getElementById("baseImage");
 
 octx.drawImage(img,0,0,out.width,out.height);
-
 octx.drawImage(canvas,0,0);
 
 const blob=await new Promise(r=>out.toBlob(r));
@@ -267,14 +293,10 @@ const blob=await new Promise(r=>out.toBlob(r));
 const file=new File([blob],"drawing.png",{type:"image/png"});
 
 if(navigator.canShare){
-
-navigator.share({
-
-files:[file],
-title:"ציור על המרגמה"
-
-});
-
+    navigator.share({
+        files:[file],
+        title:"הנה הציור שלי על המרגמה, אין על קורס מרגמות בביסלח!"
+    });
 }
 
 };
@@ -296,6 +318,19 @@ sizePicker.oninput=e=>{
 
     sizeValue.textContent=size;
 
+};
+
+const infoBtn=document.getElementById("infoBtn");
+const infoPopup=document.getElementById("infoPopup");
+const closeInfo=document.getElementById("closeInfo");
+
+infoBtn.onclick=()=>infoPopup.classList.add("show");
+closeInfo.onclick=()=>infoPopup.classList.remove("show");
+
+infoPopup.onclick=(e)=>{
+    if(e.target===infoPopup){
+        infoPopup.classList.remove("show");
+    }
 };
 </script>
 
@@ -321,7 +356,11 @@ sizePicker.oninput=e=>{
     font-family: "secular";
 
   }
-
+.toolBtn svg{
+    width:22px;
+    height:22px;
+    fill:#516b42;
+}
 
 
   .title {
@@ -506,7 +545,7 @@ sizePicker.oninput=e=>{
 
     position:absolute;
 
-    top:55%;
+    top:65%;
 
     left:50%;
 
@@ -685,6 +724,61 @@ sizePicker.oninput=e=>{
 
     font-weight:bold;
 
+}
+
+.infoBtn{
+    position:fixed;
+    top:92%;
+    left:15px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    border:none;
+    background:#516b42;
+    color:white;
+    font-size:1.5rem;
+    z-index:2000;
+}
+
+.infoPopup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:3000;
+}
+
+.infoPopup.show{
+    display:flex;
+}
+
+.infoBox{
+    background:#effeffc5;
+    padding:10px;
+    border-radius:20px;
+    width:60%;
+    max-width:300px;
+    color: #516b42;
+    text-align:center;
+    font-size: 1.2rem;
+    
+}
+
+#closeInfo{
+      background:#effeffc5;
+    padding:2px;
+    border-radius:20px;
+    width:60%;
+    max-width:300px;
+    color: #516b42;
+    border: none;
+    text-align:center;
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: secular;
 }
 </style>
 </html>
