@@ -4,8 +4,9 @@ body {
     background-image: url("assets/backgrounds/bg1.png");
     background-size: 100vw 100vh;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat:repeat-y;
     direction: rtl;
+    overflow-x: hidden;
     font-family: "secular";
 }
 
@@ -47,7 +48,7 @@ body {
     width: 300px;
     text-align: right;
     font-size: 1.2rem;
-    z-index: 10000000000000000;
+    z-index: 100;
     direction: rtl;
 
 }
@@ -90,10 +91,50 @@ body {
 
 .byGuylee {
     position: absolute;
-    bottom: 0;
+    bottom: -130%;
     left: 50%;
     transform: translateX(-50%);
 }
+
+.margrmot {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    width: 60vw;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+.inst {
+    position: absolute;
+    top: 83%;
+    left: 45%;
+    width: 92vw;
+    font-size: 1.1rem;
+    color: aliceblue;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+
+.dailyTitle {
+    position: absolute;
+    top:-13%;
+    left: 50%;
+    width: 60vw;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+.text {
+    position: absolute;
+    top: 97%;
+    left: 50%;
+    width: 85vw;
+    font-size: 1.3rem;
+    color: #EFFEFF;
+    text-align: center;
+    transform: translateX(-50%);
+}
+
 
 :root{
 
@@ -199,31 +240,29 @@ body {
 
     transition:.4s ease;
 
-    z-index:1000;
+    z-index:100000;
 }
 
 #sideMenu.active{
 
     right:0;
 }
-
 #sideMenu a{
 
     text-decoration:none;
 
     color:#5d6940;
 
-    font-size:2rem;
+    font-size:1.8rem;
 
     font-weight: 580;
 
-    padding:3vh 2vw;
+    padding:2vh 2vw;
 
     border-bottom:1px solid rgba(0,0,0,.08);
 
     transition:.25s;
 }
-
 #sideMenu a:hover{
 
     background:#dce7d0;
@@ -241,7 +280,6 @@ body {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 
-  /* חשוב ל"peek" */
   padding: 0 10vw;
 }
 
@@ -253,10 +291,10 @@ body {
 
 /* הכרטיסים */
 .card {
-  flex: 0 0 70vw;   /* 👈 קטן יותר = רואים שכנים */
+  flex: 0 0 80vw;   /* 👈 קטן יותר = רואים שכנים */
   height: 45vh;
 
-  background: rgba(255,255,255,0.92);
+  background: #e7fdfed0;
   border-radius: 28px;
 
   scroll-snap-align: center;
@@ -278,17 +316,17 @@ body {
 }
 
 /* כותרת */
-.card h2 {
+/* .card h2 {
   margin: 0 0 10px 0;
   font-size: 18px;
-}
+} */
 
 /* גלילה פנימית */
 .cardContent {
   overflow-y: auto;
   flex: 1;
   padding-right: 8px;
-  font-size: 14px;
+  font-size: 1.2px;
   line-height: 1.4;
 }
 
