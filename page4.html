@@ -11,8 +11,9 @@
 <body>
   <img class="navbar" src="assets/elements/logo.png" alt="icon 1">
   <img class="title" src="assets/elements/drawOnTheMargema.png" alt="icon 1">
- <button id="infoBtn" class="infoBtn">i</button>
-
+<button id="infoBtn">
+    ⓘ
+</button>
 <div id="infoPopup" class="infoPopup">
 
     <div class="infoBox">
@@ -34,67 +35,46 @@
     <canvas id="paintCanvas"></canvas>
 
 </div>
-
 <div class="toolbar">
 
     <button id="penBtn" class="toolBtn activeTool">
-
-        <svg viewBox="0 -960 960 960">
-            <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Z"/>
-        </svg>
-
+        <img src="assets/icons/draw.png" alt="">
     </button>
 
     <button id="eraserBtn" class="toolBtn">
-
-        <svg viewBox="0 -960 960 960">
-            <path d="M690-240h190v80H610l80-80Zm-500 80-85-85q-23-23-23.5-57t22.5-58l440-456q23-24 56.5-24t56.5 23l199 199q23 23 23 57t-23 57L520-160H190Z"/>
-        </svg>
-
+        <img src="assets/icons/erase.png" alt="">
     </button>
 
-    <input type="color" id="colorPicker" value="#ff0000">
+    <input type="color" id="colorPicker" value="#88b84d">
 
-   <div class="sizeBox">
+    <div class="sizeBox">
 
-    <button id="sizeBtn" class="toolBtn">
+        <button id="sizeBtn" class="toolBtn">
+            <img src="assets/icons/size.png" alt="">
+        </button>
 
-        <svg viewBox="0 -960 960 960">
-            <path d="M480-120q-50 0-85-35t-35-85q0-29 13.5-54t36.5-41l70-49v-236q0-17 11.5-28.5T520-660q17 0 28.5 11.5T560-620v236l70 49q23 16 36.5 41t13.5 54q0 50-35 85t-85 35H480Z"/>
-        </svg>
+        <div id="sizePopup" class="sizePopup">
+            <input
+                type="range"
+                id="sizePicker"
+                min="2"
+                max="30"
+                value="5">
 
-    </button>
-
-    <div id="sizePopup" class="sizePopup">
-
-        <input
-            type="range"
-            id="sizePicker"
-            min="2"
-            max="30"
-            value="5">
-
-        <span id="sizeValue">5</span>
+            <span id="sizeValue">5</span>
+        </div>
 
     </div>
 
-</div>
     <button id="clearBtn" class="toolBtn">
-
-        <svg viewBox="0 -960 960 960">
-            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Z"/>
-        </svg>
-
+        <img src="assets/icons/delete.png" alt="">
     </button>
 
     <button id="shareBtn" class="toolBtn">
-
-        <svg viewBox="0 -960 960 960">
-            <path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Z"/>
-        </svg>
-
+        <img src="assets/icons/share.png" alt="">
     </button>
 
+</div>
 </div>
       </div>
     </div>
@@ -163,172 +143,187 @@
     menuBtn.classList.remove("active");
   }
 
- 
+ const canvas = document.getElementById("paintCanvas");
+const ctx = canvas.getContext("2d");
 
+function resizeCanvas() {
 
-const canvas=document.getElementById("paintCanvas");
-const ctx=canvas.getContext("2d");
+    const ratio = window.devicePixelRatio || 1;
 
-const area=document.querySelector(".drawArea");
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
 
-function resizeCanvas(){
+    canvas.width = w * ratio;
+    canvas.height = h * ratio;
 
-    canvas.width=canvas.offsetWidth;
-    canvas.height=canvas.offsetHeight;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
 
-    ctx.lineCap="round";
-    ctx.lineJoin="round";
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.imageSmoothingEnabled = true;
 }
 
 resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-window.addEventListener("resize",resizeCanvas);
+let drawing = false;
+let color = "#516b42";
+let size = 5;
+let erase = false;
 
-let drawing=false;
+function getPos(e) {
 
-let color="#ff0000";
+    const rect = canvas.getBoundingClientRect();
 
-let size=5;
-
-let erase=false;
-
-ctx.lineCap="round";
-ctx.lineJoin="round";
-
-function getPos(e){
-
-const rect=canvas.getBoundingClientRect();
-
-const touch=e.touches?e.touches[0]:e;
-
-return{
-
-x:touch.clientX-rect.left,
-y:touch.clientY-rect.top
-
-};
-
+    return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
 }
 
-canvas.addEventListener("touchstart",start);
-canvas.addEventListener("touchmove",draw);
+/* ---------- ציור ---------- */
 
-canvas.addEventListener("mousedown",start);
-canvas.addEventListener("mousemove",draw);
+function start(e) {
 
-window.addEventListener("mouseup",()=>drawing=false);
-window.addEventListener("touchend",()=>drawing=false);
+    e.preventDefault();
 
-function start(e){
+    drawing = true;
 
-drawing=true;
+    const p = getPos(e);
 
-const p=getPos(e);
-
-ctx.beginPath();
-
-ctx.moveTo(p.x,p.y);
-
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
 }
 
-function draw(e){
+function draw(e) {
 
-if(!drawing)return;
+    if (!drawing) return;
 
-e.preventDefault();
+    e.preventDefault();
 
-const p=getPos(e);
+    const p = getPos(e);
 
-ctx.strokeStyle=erase?"white":color;
+    ctx.globalCompositeOperation = erase
+        ? "destination-out"
+        : "source-over";
 
-ctx.lineWidth=size;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = erase ? 25 : size;
 
-ctx.lineTo(p.x,p.y);
-
-ctx.stroke();
-
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
 }
 
-colorPicker.oninput=e=>{
+function stop() {
 
-erase=false;
-
-color=e.target.value;
-
-};
-
-eraserBtn.onclick=()=>{
-
-erase=true;
-
-ctx.lineWidth=25;
-
-};
-clearBtn.onclick=()=>{
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-};
-
-shareBtn.onclick=async()=>{
-
-const out=document.createElement("canvas");
-
-out.width=canvas.width;
-out.height=canvas.height;
-
-const octx=out.getContext("2d");
-
-/* רקע לבן חובה */
-octx.fillStyle="#fff";
-octx.fillRect(0,0,out.width,out.height);
-
-const img=document.getElementById("baseImage");
-
-octx.drawImage(img,0,0,out.width,out.height);
-octx.drawImage(canvas,0,0);
-
-const blob=await new Promise(r=>out.toBlob(r));
-
-const file=new File([blob],"drawing.png",{type:"image/png"});
-
-if(navigator.canShare){
-    navigator.share({
-        files:[file],
-        title:"הנה הציור שלי על המרגמה, אין על קורס מרגמות בביסלח!"
-    });
+    drawing = false;
 }
 
+/* ---------- Pointer Events (עובד גם במחשב וגם באייפון) ---------- */
+
+canvas.addEventListener("pointerdown", start);
+canvas.addEventListener("pointermove", draw);
+window.addEventListener("pointerup", stop);
+window.addEventListener("pointercancel", stop);
+
+/* ---------- צבע ---------- */
+
+colorPicker.oninput = e => {
+
+    erase = false;
+    color = e.target.value;
 };
 
- const sizeBtn=document.getElementById("sizeBtn");
-const sizePopup=document.getElementById("sizePopup");
-const sizePicker=document.getElementById("sizePicker");
-const sizeValue=document.getElementById("sizeValue");
+/* ---------- מחק ---------- */
 
-sizeBtn.onclick=()=>{
+eraserBtn.onclick = () => {
+
+    erase = true;
+};
+
+/* ---------- ניקוי ---------- */
+
+clearBtn.onclick = () => {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
+
+/* ---------- שיתוף ---------- */
+
+shareBtn.onclick = async () => {
+
+    const out = document.createElement("canvas");
+
+    out.width = canvas.width;
+    out.height = canvas.height;
+
+    const octx = out.getContext("2d");
+
+    octx.fillStyle = "#fff";
+    octx.fillRect(0, 0, out.width, out.height);
+
+    const img = document.getElementById("baseImage");
+
+    octx.drawImage(img, 0, 0, out.width, out.height);
+    octx.drawImage(canvas, 0, 0);
+
+    const blob = await new Promise(r => out.toBlob(r));
+
+    const file = new File(
+        [blob],
+        "drawing.png",
+        { type: "image/png" }
+    );
+
+    if (navigator.canShare) {
+
+        navigator.share({
+
+            files: [file],
+
+            title: "הנה הציור שלי על המרגמה, אין על קורס מרגמות בביסלח!"
+
+        });
+
+    }
+
+};
+
+/* ---------- גודל עט ---------- */
+
+const sizeBtn = document.getElementById("sizeBtn");
+const sizePopup = document.getElementById("sizePopup");
+const sizePicker = document.getElementById("sizePicker");
+const sizeValue = document.getElementById("sizeValue");
+
+sizeBtn.onclick = () => {
 
     sizePopup.classList.toggle("show");
-
 };
 
-sizePicker.oninput=e=>{
+sizePicker.oninput = e => {
 
-    size=Number(e.target.value);
-
-    sizeValue.textContent=size;
-
+    size = Number(e.target.value);
+    sizeValue.textContent = size;
 };
 
-const infoBtn=document.getElementById("infoBtn");
-const infoPopup=document.getElementById("infoPopup");
-const closeInfo=document.getElementById("closeInfo");
+/* ---------- חלון מידע ---------- */
 
-infoBtn.onclick=()=>infoPopup.classList.add("show");
-closeInfo.onclick=()=>infoPopup.classList.remove("show");
+const infoBtn = document.getElementById("infoBtn");
+const infoPopup = document.getElementById("infoPopup");
+const closeInfo = document.getElementById("closeInfo");
 
-infoPopup.onclick=(e)=>{
-    if(e.target===infoPopup){
+infoBtn.onclick = () => infoPopup.classList.add("show");
+
+closeInfo.onclick = () => infoPopup.classList.remove("show");
+
+infoPopup.onclick = e => {
+
+    if (e.target === infoPopup) {
+
         infoPopup.classList.remove("show");
     }
 };
@@ -359,8 +354,9 @@ infoPopup.onclick=(e)=>{
 .toolBtn svg{
     width:22px;
     height:22px;
+    display:block;
+    flex-shrink:0;
     fill:#516b42;
-    z-index: 100000000;
 }
 
 

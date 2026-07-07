@@ -11,6 +11,22 @@
 <body>
   <img class="navbar" src="assets/elements/logo.png" alt="icon 1">
   <img class="title" src="assets/elements/shooting.png" alt="icon 1">
+  <button id="infoBtn">
+    ⓘ
+</button>
+<div id="infoPopup" class="infoPopup">
+
+    <div class="infoBox">
+
+          <p>
+מכל טעות אנו שואפים להשתפר וללמוד. גללו שמאלה למגוון טעויות הירי וגללו למטה בכל כרטיסיה על מנת ללמוד על כל טעות!        </p>
+                <button id="closeInfo">סגור</button>
+
+
+
+    </div>
+
+</div>
   <div class="cardsWrapper">
     <div class="cardsTrack">
 
@@ -420,6 +436,14 @@
     </nav>
 </body>
 <script>
+         window.addEventListener("load", () => {
+    const hasVisited = localStorage.getItem("infoSeen");
+
+    if (!hasVisited) {
+        infoPopup.classList.add("show");
+        localStorage.setItem("infoSeen", "true");
+    }
+});
   const menuBtn =
     document.getElementById("menuBtn");
 
@@ -449,6 +473,22 @@
 
     menuBtn.classList.remove("active");
   }
+
+  const infoBtn = document.getElementById("infoBtn");
+const infoPopup = document.getElementById("infoPopup");
+const closeInfo = document.getElementById("closeInfo");
+
+infoBtn.onclick = () => infoPopup.classList.add("show");
+
+closeInfo.onclick = () => infoPopup.classList.remove("show");
+
+infoPopup.onclick = e => {
+
+    if (e.target === infoPopup) {
+
+        infoPopup.classList.remove("show");
+    }
+};
 </script>
 
 
@@ -668,8 +708,73 @@
 
     right: 0;
   }
+
+  
+.infoBtn{
+    position:fixed;
+    top:92%;
+    left:15px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    border:none;
+    background:#516b42;
+    color:white;
+    font-size:1.5rem;
+    z-index:2000;
+}
+
+.infoPopup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:3000;
+}
+
+.infoPopup.show{
+    display:flex;
+}
+
+.infoBox{
+    background:#effeffc5;
+    padding:10px;
+    border-radius:20px;
+    width:60%;
+    max-width:300px;
+    color: #516b42;
+    text-align:center;
+    font-size: 1.2rem;
+    
+}
+
+#closeInfo{
+      background:#effeffc5;
+    padding:2px;
+    border-radius:20px;
+    width:60%;
+    max-width:300px;
+    color: #516b42;
+    border: none;
+    text-align:center;
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: secular;
+}
 </style>
 <script>
+
+     window.addEventListener("load", () => {
+    const hasVisited = localStorage.getItem("infoSeen");
+
+    if (!hasVisited) {
+        infoPopup.classList.add("show");
+        localStorage.setItem("infoSeen", "true");
+    }
+});
   const track = document.querySelector(".cardsTrack");
   const cards = document.querySelectorAll(".card");
   const dotsContainer = document.querySelector(".dots");
