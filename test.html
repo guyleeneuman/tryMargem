@@ -1625,7 +1625,7 @@ questions:[
         "סטיק לייט",
        "פנס",
        "פקל",
-       "אפוז זוהר",
+       "אפוד זוהר",
         "ידיים",
  
     ],
@@ -2328,85 +2328,65 @@ answersContainer.appendChild(btn);
 
 }
 
-
 function createDragQuestion(q){
 
     answersContainer.innerHTML="";
 
 
-    let draggedItem=null;
-    let ghost=null;
+    let activeDrag = null;
+    let ghost = null;
+
 
 
 
 
     const boxes=document.createElement("div");
-
     boxes.className="dropAreas";
 
 
 
     const warehouse=document.createElement("div");
-
     warehouse.className="warehouse";
 
 
 
 
 
-    q.boxes.forEach(box=>{
 
 
-        let area=document.createElement("div");
+    q.boxes.forEach(boxData=>{
 
 
-        area.className="dropBox";
+        let box=document.createElement("div");
 
 
-        area.innerHTML=
-        `<h3>${box.title}</h3>`;
+        box.className="dropBox";
 
 
-        area.dataset.correct=
-        JSON.stringify(box.correct);
+        box.innerHTML=
+        `<h3>${boxData.title}</h3>`;
 
 
-
-
-        // מחשב
-
-        area.ondragover=(e)=>{
-
-            e.preventDefault();
-
-        };
+        box.dataset.correct =
+        JSON.stringify(boxData.correct);
 
 
 
-        area.ondrop=(e)=>{
 
 
-            e.preventDefault();
-
-
-            let value=
-            e.dataTransfer.getData("text");
-
-
-
-            addPlacedItem(area,value);
-
-
-            removeOriginal(value);
-
-        };
+        box.addEventListener(
+            "pointerup",
+            dropToBox
+        );
 
 
 
-        boxes.appendChild(area);
+        boxes.appendChild(box);
+
 
 
     });
+
 
 
 
@@ -2418,10 +2398,14 @@ function createDragQuestion(q){
 
 
 
+
     q.items.forEach(item=>{
 
 
-        createItem(item,warehouse);
+        createDragItem(
+            item,
+            warehouse
+        );
 
 
     });
@@ -2438,55 +2422,32 @@ function createDragQuestion(q){
 
 
 
-    function createItem(value,parent){
+
+    function createDragItem(value,parent){
 
 
-        let div=document.createElement("div");
+        let item=document.createElement("div");
 
 
-        div.className="dragItem";
+        item.className="dragItem";
 
 
-        div.innerHTML=value;
+        item.innerHTML=value;
 
 
-        div.dataset.value=value;
-
-
-        div.draggable=true;
-
+        item.dataset.value=value;
 
 
 
-        // מחשב
-
-        div.ondragstart=(e)=>{
-
-
-            e.dataTransfer.setData(
-                "text",
-                value
-            );
-
-
-        };
-
-
-
-
-        // מובייל
-
-        div.addEventListener(
-            "touchstart",
-            startDrag,
-            {
-                passive:false
-            }
+        item.addEventListener(
+            "pointerdown",
+            startDrag
         );
 
 
 
-        parent.appendChild(div);
+        parent.appendChild(item);
+
 
     }
 
@@ -2504,17 +2465,21 @@ function createDragQuestion(q){
         e.preventDefault();
 
 
-        draggedItem=this;
+        activeDrag=this;
 
 
 
         ghost=this.cloneNode(true);
 
 
-        ghost.className="dragGhost";
+        ghost.className=
+        "dragGhost";
 
 
-        document.body.appendChild(ghost);
+
+        document.body.appendChild(
+            ghost
+        );
 
 
 
@@ -2524,27 +2489,26 @@ function createDragQuestion(q){
 
 
 
-        moveGhost(
-            e.touches[0]
+        moveGhost(e);
+
+
+
+        document.addEventListener(
+            "pointermove",
+            moveDrag
         );
 
 
 
         document.addEventListener(
-            "touchmove",
-            moveDrag,
-            {
-                passive:false
-            }
-        );
-
-
-        document.addEventListener(
-            "touchend",
+            "pointerup",
             endDrag
         );
 
+
     }
+
+
 
 
 
@@ -2555,12 +2519,12 @@ function createDragQuestion(q){
     function moveDrag(e){
 
 
-        e.preventDefault();
+        if(!ghost)
+            return;
 
 
-        moveGhost(
-            e.touches[0]
-        );
+        moveGhost(e);
+
 
     }
 
@@ -2570,18 +2534,18 @@ function createDragQuestion(q){
 
 
 
-    function moveGhost(touch){
+    function moveGhost(e){
 
 
         ghost.style.left =
-        touch.clientX -
+        e.clientX -
         ghost.offsetWidth/2
         +"px";
 
 
 
         ghost.style.top =
-        touch.clientY -
+        e.clientY -
         ghost.offsetHeight/2
         +"px";
 
@@ -2595,37 +2559,37 @@ function createDragQuestion(q){
 
 
 
+
     function endDrag(e){
 
 
-        let touch=e.changedTouches[0];
 
-
-
-        let target=
+        let target =
         document.elementFromPoint(
-            touch.clientX,
-            touch.clientY
+            e.clientX,
+            e.clientY
         );
 
 
 
-        let box=
-        target?.closest(".dropBox");
+        let box =
+        target?.closest(
+            ".dropBox"
+        );
 
 
 
         if(box){
 
 
-            addPlacedItem(
+            addToBox(
                 box,
-                draggedItem.dataset.value
+                activeDrag.dataset.value
             );
 
 
-            removeOriginal(
-                draggedItem.dataset.value
+            removeItem(
+                activeDrag
             );
 
 
@@ -2633,7 +2597,9 @@ function createDragQuestion(q){
 
 
 
-        cleanup();
+
+
+        finishDrag();
 
 
     }
@@ -2646,60 +2612,105 @@ function createDragQuestion(q){
 
 
 
-    function addPlacedItem(box,value){
+    function dropToBox(e){
 
 
-
-        let p=document.createElement("div");
-
-
-        p.className="placedItem";
+        if(!activeDrag)
+            return;
 
 
-        p.innerHTML=value;
+        addToBox(
+            this,
+            activeDrag.dataset.value
+        );
 
 
-        p.dataset.value=value;
+        removeItem(
+            activeDrag
+        );
 
 
-        p.draggable=true;
+        finishDrag();
 
 
-
-
-        // מחשב
-
-        p.ondragstart=(e)=>{
-
-
-            e.dataTransfer.setData(
-                "text",
-                value
-            );
-
-
-            p.remove();
-
-        };
+    }
 
 
 
 
-        // מובייל
 
-        p.addEventListener(
-            "touchstart",
-            startDrag,
+
+
+
+
+
+    function addToBox(box,value){
+
+
+
+        let existing =
+        [...box.querySelectorAll(
+            ".placedItem"
+        )]
+        .find(
+            x=>x.dataset.value===value
+        );
+
+
+
+        if(existing)
+            return;
+
+
+
+
+
+
+        let item=document.createElement("div");
+
+
+        item.className="placedItem";
+
+
+        item.innerHTML=value;
+
+
+        item.dataset.value=value;
+
+
+
+
+
+        item.addEventListener(
+            "pointerdown",
+            startDrag
+        );
+
+
+
+        box.appendChild(item);
+
+
+
+
+        item.animate(
+            [
+                {
+                    transform:"scale(.7)",
+                    opacity:0
+                },
+                {
+                    transform:"scale(1)",
+                    opacity:1
+                }
+            ],
             {
-                passive:false
+                duration:200
             }
         );
 
 
 
-        box.appendChild(p);
-
-
     }
 
 
@@ -2710,12 +2721,8 @@ function createDragQuestion(q){
 
 
 
-    function removeOriginal(value){
 
-
-        let item=document.querySelector(
-            `.dragItem[data-value="${value}"]`
-        );
+    function removeItem(item){
 
 
         if(item){
@@ -2733,12 +2740,15 @@ function createDragQuestion(q){
 
 
 
-    function cleanup(){
 
 
-        if(draggedItem){
+    function finishDrag(){
 
-            draggedItem.classList.remove(
+
+
+        if(activeDrag){
+
+            activeDrag.classList.remove(
                 "dragging"
             );
 
@@ -2757,22 +2767,23 @@ function createDragQuestion(q){
 
 
         document.removeEventListener(
-            "touchmove",
+            "pointermove",
             moveDrag
         );
 
 
         document.removeEventListener(
-            "touchend",
+            "pointerup",
             endDrag
         );
 
 
 
-        draggedItem=null;
+        activeDrag=null;
 
 
     }
+
 
 
 
@@ -2796,34 +2807,48 @@ function createDragQuestion(q){
 
 
 
-        document.querySelectorAll(".dropBox")
+
+        document.querySelectorAll(
+            ".dropBox"
+        )
         .forEach(box=>{
 
 
             let correct=
-            JSON.parse(box.dataset.correct);
+            JSON.parse(
+                box.dataset.correct
+            );
 
 
 
-            let placed=[
-                ...box.querySelectorAll(".placedItem")
+            let placed=
+            [
+                ...box.querySelectorAll(
+                    ".placedItem"
+                )
             ]
-            .map(x=>x.dataset.value);
+            .map(
+                x=>x.dataset.value
+            );
 
 
 
-            totalAnswers+=correct.length;
+            totalAnswers +=
+            correct.length;
 
 
 
             correct.forEach(item=>{
 
 
-                if(placed.includes(item)){
+                if(
+                    placed.includes(item)
+                ){
 
                     totalCorrect++;
 
                 }
+
 
             });
 
@@ -2833,27 +2858,32 @@ function createDragQuestion(q){
 
 
 
-        score+=Math.round(
-            (totalCorrect/totalAnswers)*10
+
+        score += Math.round(
+            (
+                totalCorrect /
+                totalAnswers
+            ) * 10
         );
 
 
 
         nextQuestion();
 
+
     };
 
-
 }
-
 function createSentenceDrag(q){
 
     answersContainer.innerHTML="";
 
 
-    let draggedItem=null;
-    let floatingItem=null;
-    let warehouse=null;
+    let activeDrag=null;
+    let ghost=null;
+
+
+
 
 
 
@@ -2863,54 +2893,34 @@ function createSentenceDrag(q){
 
 
 
+
+    let warehouse=document.createElement("div");
+
+    warehouse.className="warehouse";
+
+
+
+
+
+
+
     q.sentence.forEach((text,index)=>{
 
 
-        let textSpan=document.createElement("span");
+        let span=document.createElement("span");
 
-        textSpan.innerHTML=text+" ";
 
-        sentenceBox.appendChild(textSpan);
+        span.innerHTML=text+" ";
+
+
+        sentenceBox.appendChild(span);
 
 
 
         if(index < q.sentence.length-1){
 
 
-            let drop=document.createElement("span");
-
-
-            drop.className="dropPlace";
-
-            drop.dataset.index=index;
-
-
-
-            // מחשב
-            drop.ondragover=(e)=>{
-
-                e.preventDefault();
-
-            };
-
-
-
-            drop.ondrop=(e)=>{
-
-
-                e.preventDefault();
-
-
-                let value=e.dataTransfer.getData("text");
-
-
-                placeWord(drop,value);
-
-            };
-
-
-
-            sentenceBox.appendChild(drop);
+            createDropPlace(index);
 
 
         }
@@ -2920,21 +2930,57 @@ function createSentenceDrag(q){
 
 
 
+
+
     answersContainer.appendChild(sentenceBox);
 
 
 
 
 
-    warehouse=document.createElement("div");
 
-    warehouse.className="warehouse";
+
+    function createDropPlace(index){
+
+
+
+        let place=document.createElement("span");
+
+
+        place.className="dropPlace";
+
+
+        place.dataset.index=index;
+
+
+
+        place.addEventListener(
+            "pointerup",
+            dropToPlace
+        );
+
+
+
+        sentenceBox.appendChild(place);
+
+
+    }
+
+
+
+
+
 
 
 
     q.answers.forEach(word=>{
 
-        addWord(word);
+
+        createWord(
+            word,
+            warehouse
+        );
+
 
     });
 
@@ -2948,50 +2994,35 @@ function createSentenceDrag(q){
 
 
 
-    function addWord(word){
+
+
+    function createWord(value,parent){
+
 
 
         let item=document.createElement("div");
 
 
-        item.className="dragItem sentenceItem";
+        item.className=
+        "dragItem sentenceItem";
 
 
-        item.innerHTML=word;
+        item.innerHTML=value;
 
 
-        item.dataset.value=word;
+        item.dataset.value=value;
 
 
-        item.draggable=true;
-
-
-
-        // מחשב
-
-        item.ondragstart=(e)=>{
-
-            e.dataTransfer.setData(
-                "text",
-                word
-            );
-
-        };
-
-
-
-        // מובייל
 
         item.addEventListener(
-            "touchstart",
-            startTouch,
-            {
-                passive:false
-            }
+            "pointerdown",
+            startDrag
         );
 
 
-        warehouse.appendChild(item);
+
+        parent.appendChild(item);
+
 
     }
 
@@ -3002,26 +3033,40 @@ function createSentenceDrag(q){
 
 
 
-    function startTouch(e){
+
+    function startDrag(e){
 
 
         e.preventDefault();
 
 
-        draggedItem=this;
+
+        activeDrag=this;
 
 
 
-        floatingItem=this.cloneNode(true);
+        activeDrag.oldParent =
+        this.parentElement;
 
 
-        floatingItem.classList.add(
-            "floatingDrag"
-        );
+
+        activeDrag.oldIndex =
+        [...this.parentElement.children]
+        .indexOf(this);
+
+
+
+
+        ghost=this.cloneNode(true);
+
+
+        ghost.className=
+        "dragGhost";
+
 
 
         document.body.appendChild(
-            floatingItem
+            ghost
         );
 
 
@@ -3032,43 +3077,20 @@ function createSentenceDrag(q){
 
 
 
-        moveFloating(
-            e.touches[0]
+        moveGhost(e);
+
+
+
+        document.addEventListener(
+            "pointermove",
+            moveDrag
         );
 
 
 
         document.addEventListener(
-            "touchmove",
-            moveTouch,
-            {
-                passive:false
-            }
-        );
-
-
-        document.addEventListener(
-            "touchend",
-            endTouch
-        );
-
-
-    }
-
-
-
-
-
-
-
-    function moveTouch(e){
-
-
-        e.preventDefault();
-
-
-        moveFloating(
-            e.touches[0]
+            "pointerup",
+            endDrag
         );
 
 
@@ -3081,19 +3103,40 @@ function createSentenceDrag(q){
 
 
 
-    function moveFloating(touch){
+
+    function moveDrag(e){
 
 
-        floatingItem.style.left =
-        touch.clientX -
-        floatingItem.offsetWidth/2
+        if(!ghost)
+            return;
+
+
+        moveGhost(e);
+
+
+    }
+
+
+
+
+
+
+
+
+    function moveGhost(e){
+
+
+
+        ghost.style.left =
+        e.clientX -
+        ghost.offsetWidth/2
         +"px";
 
 
 
-        floatingItem.style.top =
-        touch.clientY -
-        floatingItem.offsetHeight/2
+        ghost.style.top =
+        e.clientY -
+        ghost.offsetHeight/2
         +"px";
 
 
@@ -3106,64 +3149,47 @@ function createSentenceDrag(q){
 
 
 
-    function endTouch(e){
 
 
-        let touch=e.changedTouches[0];
+    function endDrag(e){
 
 
 
-        let target=document.elementFromPoint(
-            touch.clientX,
-            touch.clientY
+        let target=
+        document.elementFromPoint(
+            e.clientX,
+            e.clientY
         );
 
 
 
-        let drop=target?.closest(
+        let place=
+        target?.closest(
             ".dropPlace"
         );
 
 
 
-        if(drop){
+        if(place){
 
 
-            placeWord(
-                drop,
-                draggedItem.dataset.value
+            dropToPlace.call(
+                place
             );
 
+
+        }
+        else{
+
+
+            returnBack();
 
         }
 
 
 
-        draggedItem.classList.remove(
-            "dragging"
-        );
 
-
-        floatingItem.remove();
-
-
-        floatingItem=null;
-
-
-        draggedItem=null;
-
-
-
-        document.removeEventListener(
-            "touchmove",
-            moveTouch
-        );
-
-
-        document.removeEventListener(
-            "touchend",
-            endTouch
-        );
+        finishDrag();
 
 
     }
@@ -3176,58 +3202,179 @@ function createSentenceDrag(q){
 
 
 
-    function placeWord(drop,value){
+    function dropToPlace(){
+
+
+        let place=this;
 
 
 
-        // מחזיר מילה שהייתה במקום
+        let value=
+        activeDrag.dataset.value;
 
-        if(drop.dataset.value){
 
 
-            addWord(
-                drop.dataset.value
-            );
+        let existing=
+        place.dataset.value;
+
+
+
+
+
+        // אם יש מילה במקום - החלפה
+
+        if(existing){
+
+
+
+            activeDrag.dataset.value =
+            existing;
+
+
+
+            activeDrag.innerHTML =
+            existing;
+
+
+
+            place.innerHTML =
+            value;
+
+
+
+            place.dataset.value =
+            value;
+
+
+
+            return;
 
 
         }
 
 
 
-        drop.innerHTML=value;
-
-
-        drop.dataset.value=value;
 
 
 
-        let old=document.querySelector(
-            `.sentenceItem[data-value="${value}"]`
-        );
+
+        // אם מגיע ממקום אחר במשפט
+
+        if(
+            activeDrag.parentElement.classList.contains(
+                "sentence"
+            )
+        ){
 
 
-        if(old){
+            let oldPlace =
+            activeDrag.parentElement;
 
-            old.remove();
+
+
+            oldPlace.innerHTML="";
+
+
+            oldPlace.dataset.value="";
+
 
         }
 
 
 
-        drop.classList.add(
-            "placed"
+
+
+
+
+        place.innerHTML=value;
+
+
+        place.dataset.value=value;
+
+
+
+        activeDrag.remove();
+
+
+    }
+
+
+
+
+
+
+
+
+
+    function returnBack(){
+
+
+        activeDrag.classList.remove(
+            "dragging"
         );
 
 
-        setTimeout(()=>{
+        if(
+            activeDrag.oldParent
+        ){
 
 
-            drop.classList.remove(
-                "placed"
+            activeDrag.oldParent.appendChild(
+                activeDrag
             );
 
 
-        },250);
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+    function finishDrag(){
+
+
+        if(activeDrag){
+
+            activeDrag.classList.remove(
+                "dragging"
+            );
+
+        }
+
+
+
+        if(ghost){
+
+            ghost.remove();
+
+            ghost=null;
+
+        }
+
+
+
+        document.removeEventListener(
+            "pointermove",
+            moveDrag
+        );
+
+
+
+        document.removeEventListener(
+            "pointerup",
+            endDrag
+        );
+
+
+
+        activeDrag=null;
 
 
     }
@@ -3245,6 +3392,7 @@ function createSentenceDrag(q){
 
 
     nextBtn.onclick=()=>{
+
 
 
         let answers=[];
@@ -3266,6 +3414,8 @@ function createSentenceDrag(q){
 
 
 
+
+
         let correct=0;
 
 
@@ -3274,19 +3424,27 @@ function createSentenceDrag(q){
             (item,index)=>{
 
 
-                if(answers[index]===item){
+                if(
+                    answers[index]===item
+                ){
 
                     correct++;
 
                 }
+
 
             }
         );
 
 
 
+
+
         score += Math.round(
-            (correct/q.correct.length)*10
+            (
+                correct /
+                q.correct.length
+            ) * 10
         );
 
 
@@ -4400,6 +4558,85 @@ margin:5px;
     opacity:.7;
     transform:scale(1.1);
 }
+}
+.dragItem,
+.placedItem{
+
+    touch-action:none;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+
+    cursor:grab;
+
+}
+
+
+
+.dragging{
+
+    opacity:.25;
+
+}
+
+
+
+.dragGhost{
+
+    position:fixed;
+
+    z-index:99999;
+
+    pointer-events:none;
+
+    transform:scale(1.15);
+
+    opacity:.95;
+
+    box-shadow:
+    0 15px 30px rgba(0,0,0,.25);
+
+}
+
+
+
+.dropBox{
+
+    min-height:100px;
+
+}
+
+
+
+.placedItem{
+
+    animation:
+    popIn .2s ease;
+
+}
+
+
+
+@keyframes popIn{
+
+    from{
+
+        transform:scale(.7);
+
+        opacity:0;
+
+    }
+
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
 }
 </style>
 
