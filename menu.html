@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tashApp</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <img class="navbar" src="assets/logos/logos.png" alt="icon 1">
+    <img class="title" src="assets/titles/title.png" alt="icon 1">
+
+    <div class="byGuylee">פותח על ידי רב"ט גיא-לי נוימן/ גפ"ה ביסל"ח</div>
+<div class="menuButtons">
+
+    <a href="page1.html">
+        <img src="assets/buttons/hova.png" alt="כפתור 1">
+    </a>
+
+    <a href="page2.html">
+        <img src="assets/buttons/keva.png" alt="כפתור 2">
+    </a>
+
+    <a href="page3.html">
+        <img src="assets/buttons/banks.png" alt="כפתור 3">
+    </a>
+
+    <a href="page4.html">
+        <img src="assets/buttons/contact.png" alt="כפתור 4">
+    </a>
+
+</div>
+<!-- Overlay -->
+<div id="popupOverlay" class="popupOverlay">
+
+    <div class="popupBox">
+
+        <img class="popupBg" src="assets/elements/popUp.png" alt="">
+
+        <div class="popupText">
+ אני ג’יניתש ואני הולך להגשים את כל משאלות הת”ש שלכם! באתר זה, נלמד על זכויות הת”ש שלנו כחיילי חובה וקבע, על איך נוציא אישורים על פי בנק ומי האנשי קשר שלנו בתחום בחטיבה.  לחצו על הנושא הרלוונטי עבורכם ונלמד עליו ביחד.
+        </div>
+
+        <img
+            id="closePopup"
+            class="closePopup"
+            src="assets/buttons/closeBtn.png"
+            alt="סגור">
+
+    </div>
+
+</div>
+
+<!-- כפתור מידע קטן -->
+<button id="infoBtn">
+    ⓘ
+</button>
+</body>
+<script> 
+const popup = document.getElementById("popupOverlay");
+const closePopup = document.getElementById("closePopup");
+const infoBtn = document.getElementById("infoBtn");
+
+const STORAGE_KEY = "tashAppPopupSeen";
+
+// אם זו הפעם הראשונה
+window.addEventListener("load", () => {
+
+    if (!localStorage.getItem(STORAGE_KEY)) {
+
+        popup.classList.add("show");
+
+        localStorage.setItem(STORAGE_KEY, "true");
+    }
+
+});
+
+// סגירה
+closePopup.onclick = () => {
+
+    popup.classList.remove("show");
+
+};
+
+// לחיצה מחוץ לפופאפ
+popup.onclick = (e)=>{
+
+    if(e.target===popup){
+
+        popup.classList.remove("show");
+    }
+
+};
+
+// פתיחה ידנית
+infoBtn.onclick = ()=>{
+
+    popup.classList.add("show");
+
+}; 
+function menu() {   
+        window.location.href = "menu.html";
+}
+</script> 
+<style>
+    .title{
+        top: 12%;
+        width:30vw;
+        right: 50%;
+    }
+
+    .menuButtons{
+    position:absolute;
+    top:20%;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:85vw;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+}
+
+.menuButtons a{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.menuButtons img{
+    width:min(75vw,330px);
+    cursor:pointer;
+    transition:0.25s;
+}
+
+.menuButtons img:hover{
+    transform:scale(1.04);
+}
+
+.menuButtons img:active{
+    transform:scale(0.95);
+}
+/* מסך כהה */
+
+.popupOverlay{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+}
+
+.popupOverlay.show{
+    display:flex;
+}
+
+/* קופסה */
+
+.popupBox{
+
+    position:relative;
+
+    width:min(85vw,420px);
+
+    animation:popup .35s ease;
+}
+
+/* תמונת הרקע */
+
+.popupBg{
+
+    width:100%;
+    display:block;
+}
+
+/* הטקסט */
+
+.popupText{
+
+    position:absolute;
+
+    top:15%;
+    left:12%;
+    right:12%;
+
+    color:#341a42;
+
+    font-size:1.1rem;
+direction: rtl;
+    font-weight: 600;
+    text-align:center;
+
+    line-height:1.3;
+}
+
+/* כפתור סגירה */
+
+.closePopup{
+
+    position:absolute;
+
+    width:50px;
+
+    bottom:43%;
+    left:50%;
+
+    transform:translateX(-50%);
+width: 20vw;
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.closePopup:active{
+
+    transform:translateX(-50%) scale(.9);
+}
+
+/* כפתור מידע קטן */
+#infoBtn{
+
+    position:fixed;
+
+    left:5px;
+
+    bottom:10px;
+
+    width:38px;
+    height:38px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background: none;
+
+    color:rgb(84, 7, 88);
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+    /* box-shadow:0 5px 15px rgba(0,0,0,.25); */
+}
+@keyframes popup{
+
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+
+}
+</style>
+</html>

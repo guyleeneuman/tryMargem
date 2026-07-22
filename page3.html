@@ -1,453 +1,1583 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>בד"חים</title>
+  <title>tashApp</title>
   <link rel="stylesheet" href="index.css">
 </head>
-
 <body>
-  <img class="navbar" src="assets/elements/logo.png" alt="icon 1">
-  <img class="title" src="assets/elements/badahim.png" alt="icon 1">
- 
- <div id="categoryScreen" class="categoryScreen">
+    <img class="navbar" src="assets/logos/logos.png" alt="icon 1">
+    <img class="title" src="assets/titles/title.png" alt="icon 1">
+        <img class="title2" src="assets/buttons/banks.png" alt="icon 1">
 
-    <img class="categoryBtn" id="btn1" src="assets/titles/h.png">
+</div>
+<button class="menuBtn" onclick="menu()">
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         height="24px" 
+         viewBox="0 -960 960 960" 
+         width="24px" 
+         fill="#431046">
+         
+        <path d="M183.5-183.5Q160-207 160-240t23.5-56.5Q207-320 240-320t56.5 23.5Q320-273 320-240t-23.5 56.5Q273-160 240-160t-56.5-23.5Zm240 0Q400-207 400-240t23.5-56.5Q447-320 480-320t56.5 23.5Q560-273 560-240t-23.5 56.5Q513-160 480-160t-56.5-23.5Zm240 0Q640-207 640-240t23.5-56.5Q687-320 720-320t56.5 23.5Q800-273 800-240t-23.5 56.5Q753-160 720-160t-56.5-23.5Zm-480-240Q160-447 160-480t23.5-56.5Q207-560 240-560t56.5 23.5Q320-513 320-480t-23.5 56.5Q273-400 240-400t-56.5-23.5Zm240 0Q400-447 400-480t23.5-56.5Q447-560 480-560t56.5 23.5Q560-513 560-480t-23.5 56.5Q513-400 480-400t-56.5-23.5Zm240 0Q640-447 640-480t23.5-56.5Q687-560 720-560t56.5 23.5Q800-513 800-480t-23.5 56.5Q753-400 720-400t-56.5-23.5Zm-480-240Q160-687 160-720t23.5-56.5Q207-800 240-800t56.5 23.5Q320-753 320-720t-23.5 56.5Q273-640 240-640t-56.5-23.5Zm240 0Q400-687 400-720t23.5-56.5Q447-800 480-800t56.5 23.5Q560-753 560-720t-23.5 56.5Q513-640 480-640t-56.5-23.5Zm240 0Q640-687 640-720t23.5-56.5Q687-800 720-800t56.5 23.5Q800-753 800-720t-23.5 56.5Q753-640 720-640t-56.5-23.5Z"/>
+    </svg>
+</button>
+    <!-- <div class="byGuylee">פותח על ידי רב"ט גיא-לי נוימן/ גפ"ה ביסל"ח</div> -->
 
-    <img class="categoryBtn" id="btn2" src="assets/titles/k.png">
+
+<!-- Overlay -->
+<div id="popupOverlay" class="popupOverlay">
+
+    <div class="popupBox">
+
+        <img class="popupBg" src="assets/elements/popUp.png" alt="">
+
+        <div class="popupText">
+המשאלה שלכם התגשמה! הגעתם להוצאת אישורים על פי בנק. בחרו בבנק הרלוונטי עבורכם וגללו לקריאה עליו. לחזרה לכלל הנושאים יש ללחוץ על כפתור התפריט מצד ימין למעלה.        </div>
+
+        <img
+            id="closePopup"
+            class="closePopup"
+            src="assets/buttons/closeBtn.png"
+            alt="סגור">
+
+    </div>
 
 </div>
 
-<div id="viewer" class="viewer"></div>
-     
-      </div>
-    </div>
+<!-- כפתור מידע קטן -->
 <button id="infoBtn">
     ⓘ
 </button>
-    <div id="infoPopup" class="infoPopup">
 
-    <div class="infoBox">
+<div class="topicsContainer">
 
-          <p>
-לפנייך בד"חים, בחר בחנית / קשת וגלול למטה ולמעלה לצפייה בכל הבד"חים.        </p>
-                <button id="closeInfo">סגור</button>
+<button class="topicBtn" onclick="openTopic(0)">
+    <img src="assets/elements/bank1.png">
+ <span>בינלאומי</span>
+</button>    
+<button class="topicBtn" onclick="openTopic(1)">
+    <img src="assets/elements/bank2.png">
+     <span>בנק ירושלים</span>
+
+</button> 
+<button class="topicBtn" onclick="openTopic(2)">
+    <img src="assets/elements/bank3.png">
+ <span>מרכנתיל</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(3)">
+    <img src="assets/elements/bank4.png">
+ <span>מזרחי טפחות</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(4)">
+    <img src="assets/elements/bank5.png">
+ <span>דיסקונט</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(5)">
+    <img src="assets/elements/bank6.png">
+ <span>לאומי</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(6)">
+    <img src="assets/elements/bank7.png">
+ <span>דואר ישראל</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(7)">
+    <img src="assets/elements/bank8.png">
+ <span>בנק הפועלים</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(8)">
+    <img src="assets/elements/bank9.png">
+ <span>peper</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(9)">
+    <img src="assets/elements/bank10.png">
+ <span>בנק יהב</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(0)">
+    <img src="assets/elements/bank11.png">
+ <span>אוצר החייל</span>
+</button>  
+<button class="topicBtn" onclick="openTopic(10)">
+    <img src="assets/elements/bank12.png">
+ <span>בנק אגוד</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(0)">
+    <img src="assets/elements/bank13.png">
+ <span>בנק פועלי אגודת ישראל</span>
+</button> 
+<button class="topicBtn" onclick="openTopic(0)">
+    <img src="assets/elements/bank14.png">
+ <span>מסד</span>
+</button> 
+
+</div>
 
 
+<!-- פופאפ נושא -->
+<div id="topicPopup" class="topicOverlay">
+
+    <div class="topicBox">
+
+        <h1 id="topicTitle"></h1>
+
+        <div class="deviceSelector">
+
+            <button id="pcBtn"
+                    class="deviceBtn active"
+                    onclick="changeDevice('pc')">
+                 מחשב
+            </button>
+
+            <button id="phoneBtn"
+                    class="deviceBtn"
+                    onclick="changeDevice('phone')">
+                טלפון
+            </button>
+
+        </div>
+
+        <div id="topicContent" class="topicContent"></div>
+
+        <button class="backBtn" onclick="closeTopic()">
+            חזרה לכל הנושאים
+        </button>
 
     </div>
 
 </div>
-    <button id="menuBtn" class="menuBtn">
 
-      <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-
-        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-
-      </svg>
-
-    </button>
-
-    <div id="overlay"></div>
-
-    <nav id="sideMenu">
-
-      <a href="index.html">דף הבית</a>
-
-      <a href="page1.html">טעויות ירי</a>
-
-      <a href="page2.html">מבחני הו"בים</a>
-
-      <a href="page3.html">בד״חים</a>
-
-      <a href="page4.html">צייר על המרגמה</a>
-
-    </nav>
 </body>
-<script>
-        window.addEventListener("load", () => {
-    const hasVisited = localStorage.getItem("infoSeen");
+<script> 
+const popup = document.getElementById("popupOverlay");
+const closePopup = document.getElementById("closePopup");
+const infoBtn = document.getElementById("infoBtn");
 
-    if (!hasVisited) {
-        infoPopup.classList.add("show");
-        localStorage.setItem("infoSeen", "true");
+const STORAGE_KEY = "tashAppPopupSeen";
+
+// אם זו הפעם הראשונה
+window.addEventListener("load", () => {
+
+    if (!localStorage.getItem(STORAGE_KEY)) {
+
+        popup.classList.add("show");
+
+        localStorage.setItem(STORAGE_KEY, "true");
     }
+
 });
-  const menuBtn =
-    document.getElementById("menuBtn");
 
-  const sideMenu =
-    document.getElementById("sideMenu");
+let currentDevice="pc";
 
-  const overlay =
-    document.getElementById("overlay");
+const topics=[
+{
+title:"בינלאומי",
 
-  menuBtn.addEventListener("click", () => {
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: דוח ניהול חשבון</li>
+    <li>ייצא כקובץ</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: תנועות עו"ש</li>
+    <li>לחץ על: להפיק דוח</li>
+    <li>לחץ על: להפיק מסמך</li>
+    </ol>
 
-    sideMenu.classList.toggle("active");
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: כרטיסי חיובים</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>ייצא כקובץ</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: דוח אישורי יתרה</li>
+    </ol>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: דוח ניהול חשבון</li>
+    <li>ייצא כקובץ</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>  
+    <li>לחץ על: תפריט</li> 
+    <li>לחץ על: התכתבות עם הבנק</li>   
+    <li>לחץ על: דוחות, אישורים ודפי חשבון</li>
+    <li>לחץ על: דפי חשבון</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה במחשב</li>
+    <li>לחץ על: כרטיסי חיובים</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>ייצא כקובץ</li>
+</ol>
 
-    overlay.classList.toggle("active");
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: תפריט</li>
+    <li>לחץ על: התכתבות עם הבנק</li>   
+    <li>לחץ על: דוחות, אישורים ודפי חשבון</li>
+    <li>לחץ על: אישור יתרה</li>
+    </ol>
+    `
+},
+{
+title:"בנק ירושלים",
 
-    menuBtn.classList.toggle("active");
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>תחת הגדרת המינוי, לחץ על: בקשה לקבלת אישור ניהול חשבון</li>
+    <li>לחץ על: דואר אלקטרוני מאובטח</li>
+    <li>רשום את המייל ומספר הטלפון שלך</li>
+    <li>לחץ על: שלח בקשה</li>
+    <li>הזן את הקוד שהתקבל</li>
+    <li>שמור כקובץ</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>הכנס לפעולות נפוצות</li>
+    <li>לחץ על: בקשה לקבלת דוח תנועות</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>בחר במייל</li>
+    <li>לחץ על: שלח בקשה</li>
+    </ol>
 
-  });
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: כרטיסים בחשבון שלי</li>
+    <li>לחץ על: הכרטיס הרצוי</li>
+    <li>בחר בחודש הרצוי</li>
+    <li>בצד שמאל למעלה לחץ על: שמור כPDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>הכנס לפעולות נפוצות</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>מצד שמאל למעלה לחץ על: אייקון המדפסת</li>
+    <li>לחץ על: בחר מדפסת</li>
+    <li>שמור כPDF</li>
+    </ol>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>תחת הגדרת המינוי, לחץ על: בקשה לקבלת אישור ניהול חשבון</li>
+    <li>לחץ על: דואר אלקטרוני מאובטח</li>
+    <li>רשום את המייל ומספר הטלפון שלך</li>
+    <li>לחץ על: שלח בקשה</li>
+    <li>הזן את הקוד שהתקבל</li>
+    <li>שמור כקובץ</li>>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>הכנס לפעולות נפוצות</li>
+    <li>לחץ על: בקשה לקבלת דוח תנועות</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>בחר במייל</li>
+    <li>לחץ על: שלח בקשה</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>בצד ימין לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: כרטיסים בחשבון שלי</li>
+    <li>לחץ על: הכרטיס הרצוי</li>
+    <li>בחר בחודש הרצוי</li>
+    <li>בצד שמאל למעלה לחץ על: שמור כPDF</li>
+</ol>
 
-  overlay.addEventListener("click", closeMenu);
+<h1>ריכוז יתרות</h1>
+<ol>
+     <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>הכנס לפעולות נפוצות</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>מצד שמאל למעלה לחץ על: אייקון המדפסת</li>
+    <li>לחץ על: בחר מדפסת</li>
+    <li>שמור כPDF</li>
+    </ol>
+    `
+},
 
-  function closeMenu() {
 
-    sideMenu.classList.remove("active");
+{
+title:"מרכנתיל",
 
-    overlay.classList.remove("active");
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: אישור ניהול חשבון/li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כPDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עו"ש</li>
+    <li>לחץ על: תנועות אחרונות</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בחר במייל</li>
+    <li>ייצא כPDF</li>
+    </ol>
 
-    menuBtn.classList.remove("active");
-  }
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: דוח נתוני אשראי/li>
+    <li>בחר במספר טלפון ולאחר מכן בהודעה</li>
+    <li>לחץ על: שלח לי קוד</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: ריכוז יתרות ליום קודם</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: אישור ניהול חשבון/li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כPDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עו"ש</li>
+    <li>לחץ על: תנועות אחרונות</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בחר במייל</li>
+    <li>ייצא כPDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: דוח נתוני אשראי/li>
+    <li>בחר במספר טלפון ולאחר מכן בהודעה</li>
+    <li>לחץ על: שלח לי קוד</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+     <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: ריכוז יתרות ליום קודם</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+    `
+},
 
-  const albums = {
 
-    btn1:[
-        "assets/elements/h1.jpg",
-        "assets/elements/h2.jpg",
-        "assets/elements/h3.jpg",
-        "assets/elements/h4.jpg",
-        "assets/elements/h5.jpg",
-        "assets/elements/h6.jpg",
-        "assets/elements/h7.jpg",
-        "assets/elements/h8.jpg",
-    ],
+{
+title:"מזרחי טפחות",
 
-    btn2:[
-        "assets/elements/k1.jpg",
-        "assets/elements/k2.jpg",
-        "assets/elements/k3.jpg",
-        "assets/elements/k4.jpg",
-        "assets/elements/k5.jpg",
-        "assets/elements/k6.jpg",
-        "assets/elements/k7.jpg",
-        "assets/elements/k8.jpg",
-        "assets/elements/k9.jpg",
-        "assets/elements/k10.jpg",
-      
-    ]
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: עובר ושב שלי </li>
+    <li>מצד שמאל לחץ על: אישורים ומסלולי עמלות</li>
+    <li>לחץ על: ניהול חשבון, על החשבון הרלוונטי</li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>בחר בשמירה כPDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: יתרה ותנועות בחשבון</li>
+    <li>לחץ על: שלוה חודשים אחרונים</li>
+    <li>מצד שמאל למעלה לחץ על: שמירה</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: הכרטיסים שלי</li>
+    <li>בחר חודש/li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: דוחות ואישורים</li>
+    <li>בחר את סוג הדוח הרצוי</li>
+    <li>בחר את טווח התאריכים</li>
+    <li>לחץ על: הצג דוח</li>
+    <li>לחץ על: שמירה / הורדה</li>
+    <li>ייצא כקובץ PDF</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: עובר ושב שלי </li>
+    <li>מצד שמאל לחץ על: אישורים ומסלולי עמלות</li>
+    <li>לחץ על: ניהול חשבון, על החשבון הרלוונטי</li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>בחר בשמירה כPDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: יתרה ותנועות בחשבון</li>
+    <li>לחץ על: שלוה חודשים אחרונים</li>
+    <li>מצד שמאל למעלה לחץ על: שמירה</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: הכרטיסים שלי</li>
+    <li>בחר חודש/li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+     <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: דוחות ואישורים</li>
+    <li>בחר את סוג הדוח הרצוי</li>
+    <li>בחר את טווח התאריכים</li>
+    <li>לחץ על: הצג דוח</li>
+    <li>לחץ על: שמירה / הורדה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+    `
+},
+
+{
+title:"דיסקונט",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: תנועות אחרונות</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: דוח</li>
+    <li>לחץ על: דוח נתוני אשראי</li>
+    <li>בחר במספר טלפון, הודעה</li>
+    <li>לחץ על: שלח לי קוד</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: ריכוז יתרות ליום קודם</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: תנועות אחרונות</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: דוח</li>
+    <li>לחץ על: דוח נתוני אשראי</li>
+    <li>בחר במספר טלפון, הודעה</li>
+    <li>לחץ על: שלח לי קוד</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: דוחות</li>
+    <li>לחץ על: ריכוז יתרות ליום קודם</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+    `
+},
+
+{
+title:"לאומי",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>בצד ימין לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>נבחר בעברית</li>
+    <li>הקובץ ירד לנו אוטומטית למחשב</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: התפריט מצד שמאל</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: תנועות בחשבון</li>
+    <li>מצד שמאל לחץ על: החיפוש המתקדם</li>
+    <li>בחר תקופה</li>
+    <li>לחץ על: צילום</li>
+    <li>בצד שמאל למעלה לחץ על: ייצוא כPDF</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>בצד ימין בתפריט לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: כרטיסים בחשבון שלי</li>
+    <li>בחר בכרטיס הרצוי</li>
+    <li>בחר בחודש הרצוי</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>בצד שמאל למעלה שמור כPDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>בצד ימין בתפריט לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>בחר בעברית</li>
+    <li>מצד שמאל לחץ על: שמירה</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: עבורך</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>בצד שמאל לחץ על: החץ/li>
+    <li>הקובץ ירד לנו אוטומטית למחשב</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: התפריט מצד שמאל</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: תנועות בחשבון</li>
+    <li>מצד שמאל לחץ על: החיפוש המתקדם</li>
+    <li>בחר תקופה</li>
+    <li>לחץ על: צילום</li>
+    <li>בצד שמאל למעלה לחץ על: ייצוא כPDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>בצד ימין בתפריט לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: כרטיסים בחשבון שלי</li>
+    <li>בחר בכרטיס הרצוי</li>
+    <li>בחר בחודש הרצוי</li>
+    <li>הזן את הקוד שקיבלת</li>
+    <li>בצד שמאל למעלה שמור כPDF</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>בצד ימין בתפריט לחץ על: דוחות ואישורים</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>בחר בעברית</li>
+    <li>מצד שמאל לחץ על: שמירה</li>
+    </ol>
+    `
+},
+
+{
+title:"דואר ישראל",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+     <li>התקשר לבנק הדואר: 02-5005300</li>
+    <li>הזן תעודת זהות</li>
+    <li>בחר בדיבור עם נציג</li>
+    <li>מצד שמאל לחץ על: שמירה והדפסה</li>
+    <li>בקש לשלוח למייל את המסמך הרצוי</li>
+    </ol>
+    `
+},
+
+
+{
+title:"בנק הפועלים",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: הפקת אישורים</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li> הצג כ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>בתפריט לחץ על: תנועות בחשבון</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>לחץ על: החץ שמצביע מטה</li>
+    <li>לחץ על: שמירה כקובץ PDF</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: מידע</li>
+    <li>לחץ על: חיובים קודמים</li>
+    <li>לחץ על: תקופה</li>
+    <li>בחר בתאריך מדויק, שלושת החודשים האחרונים</li>
+    <li>לחץ על אייקון המדפסת</li>
+    <li>שמור כPDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>לחץ על: מידע</li>
+    <li> לחץ על: ריכוז יתרה</li>
+    <li>לחץ על: יום עסקים אחרון</li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>שמור כPDF</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>בלשונית למעלה לחץ על: ריכוז יתרות</li>
+    <li>לחץ על: אישורים ודוחות</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li> לחץ על: אישור בעברית</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>בתפריט לחץ על: תנועות בחשבון</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>לחץ על: אייקון המדפסת</li>
+    <li>לחץ על: החץ שמצביע מטה</li>
+    <li>לחץ על: שמירה כקובץ PDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>בלשונית למעלה לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: הכרטיס הרצוי</li>
+    <li>בחר חודש, תאריך רלוונטי</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: ריכוז יתרות </li>
+    <li>צלם את המסך שהתקבל</li>
+    </ol>
+    `
+},
+
+
+//עוד לא עשיתי
+{
+title:"peper",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: הכפתור הורוד, הפקת מסמך חדש</li>
+    <li>לחץ על: אישור בעלות חשבון</li>
+    <li>הורד את המסמך</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: החשבון שלי</li>
+    <li>לחץ על: פירוט הפעולות </li>
+    <li>בחר בתאריכים הרלוונטיים</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>חפש: פירוט חיובים</li>
+    <li>לחץ על: דפי פירוט</li>
+    <li>בחר במספר טלפון, הודעה</li>
+    <li>בחר כרטיס, חודש</li>
+    <li>הורד את המסמך</li>
+   
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: הכפתור הורוד, הפקת מסמך חדש</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>בחר תאריך/li>
+    <li>הורד את המסמך</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: הכפתור הורוד, הפקת מסמך חדש</li>
+    <li>לחץ על: אישור בעלות חשבון</li>
+    <li>הורד את המסמך</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: החשבון שלי</li>
+    <li>לחץ על: פירוט הפעולות </li>
+    <li>בחר בתאריכים הרלוונטיים</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>חפש: פירוט חיובים</li>
+    <li>לחץ על: דפי פירוט</li>
+    <li>בחר במספר טלפון, הודעה</li>
+    <li>בחר כרטיס, חודש</li>
+    <li>הורד את המסמך</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: פרופיל</li>
+    <li>לחץ על: מסמכים</li>
+    <li> לחץ על: הכפתור הורוד, הפקת מסמך חדש</li>
+    <li>לחץ על: ריכוז יתרות</li>
+    <li>בחר תאריך/li>
+    <li>הורד את המסמך</li>
+    `
+},
+
+
+{
+title:"בנק יהב",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>בסרגל הכלים לחץ על: מידע והגדרות</li>
+    <li>לחץ על: ניהול חשבון</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>בסרגל הכלים לחץ על: ניהול חשבון עובר ושב</li>
+    <li>מעל הטבלה בצד שמאל: הגדר תאריכים</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>בחר בכרטיס הרצוי</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>לחץ על: תקופה</li>
+    <li>בחר בתאריך מדויק, שלושת החודשים האחרונים</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>בסרגל הכלים לחץ על: ניהול חשבון עובר ושב</li>
+    <li>מצד ימין לחץ על: ריכוז יתרות</li>
+    <li>ייצא כקובץ PDF</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>>
+    <li>בסרגל הכלים לחץ על: מידע והגדרות</li>
+    <li>לחץ על: ניהול חשבון</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>בסרגל הכלים לחץ על: ניהול חשבון עובר ושב</li>
+    <li>מעל הטבלה בצד שמאל: הגדר תאריכים</li>
+    <li>בחר בשלושת החודשים האחרונים</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאפליקציה</li>
+    <li>לחץ על: כרטיסי אשראי</li>
+    <li>לחץ על: הכרטיס הרצוי</li>
+    <li>בחר בכרטיס הרצוי</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>לחץ על: תקופה</li>
+    <li>בחר בתאריך מדויק, שלושת החודשים האחרונים</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>בסרגל הכלים לחץ על: ניהול חשבון עובר ושב</li>
+    <li>מצד ימין לחץ על: ריכוז יתרות</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+    `
+},
+
+
+{
+title:"בנק אגוד",
+
+pc:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: תפריט</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>בחר תאריכים</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: תפריט</li>
+    <li>לחץ על: כרטיס אשראי</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>בחר בתקופה הרצויה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+<h1>ריכוז יתרות</h1>
+<ol>
+   <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li> לחץ על: ריכוז יתרות</li>
+    <li>ייצא כקובץ PDF</li>
+`,
+phone:`
+<h1>אישור בעלות חשבון</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>>
+    <li>לחץ על: תפריט</li>
+    <li>לחץ על: אישור ניהול חשבון</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>עובר ושב</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: עובר ושב</li>
+    <li>בחר תאריכים</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+<h1>פירוט כרטיס אשראי</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>לחץ על: תפריט</li>
+    <li>לחץ על: כרטיס אשראי</li>
+    <li>לחץ על: פירוט חיובים</li>
+    <li>בחר בתקופה הרצויה</li>
+    <li>ייצא כקובץ PDF</li>
+</ol>
+
+<h1>ריכוז יתרות</h1>
+<ol>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: שלושת הנקודות</li>
+    <li>לחץ על: לגרסה למחשב</li>
+    <li>הכנס לאתר</li>
+    <li>לחץ על: עובר ושב</li>
+    <li> לחץ על: ריכוז יתרות</li>
+    <li>ייצא כקובץ PDF</li>
+    </ol>
+    `
+},
+];
+
+
+
+function openTopic(index){
+
+    currentTopic = index;
+
+    document.getElementById("topicTitle").innerHTML =
+        topics[index].title;
+
+    document.getElementById("topicContent").innerHTML =
+        topics[index][currentDevice];
+
+    document.getElementById("topicPopup")
+        .classList.add("show");
+}
+function changeDevice(device){
+
+    currentDevice = device;
+
+    document
+        .getElementById("pcBtn")
+        .classList.toggle("active", device === "pc");
+
+    document
+        .getElementById("phoneBtn")
+        .classList.toggle("active", device === "phone");
+
+    // עדכון הטקסט
+    document.getElementById("topicContent").innerHTML =
+        topics[currentTopic][currentDevice];
+}
+
+
+
+function closeTopic(){
+
+    document.getElementById("topicPopup")
+    .classList.remove("show");
+
+} 
+// סגירה
+closePopup.onclick = () => {
+
+    popup.classList.remove("show");
 
 };
 
-const categoryScreen=document.getElementById("categoryScreen");
-const viewer=document.getElementById("viewer");
+// לחיצה מחוץ לפופאפ
+popup.onclick = (e)=>{
 
-document.getElementById("btn1").onclick=()=>openAlbum("btn1");
-document.getElementById("btn2").onclick=()=>openAlbum("btn2");
+    if(e.target===popup){
 
-function openAlbum(name){
-
-    categoryScreen.style.display="none";
-
-    viewer.style.display="block";
-
-    viewer.innerHTML="";
-
-    albums[name].forEach(src=>{
-
-        const img=document.createElement("img");
-
-        img.src=src;
-
-        viewer.appendChild(img);
-
-    });
-
-}
-
-function openAlbum(name){
-
-    if (navigator.vibrate) navigator.vibrate(20);
-
-    categoryScreen.style.display="none";
-    viewer.style.display="block";
-    viewer.innerHTML="";
-
-    albums[name].forEach(src=>{
-        const img=document.createElement("img");
-        img.src=src;
-        viewer.appendChild(img);
-    });
-}
-
-const infoBtn=document.getElementById("infoBtn");
-const infoPopup=document.getElementById("infoPopup");
-const closeInfo=document.getElementById("closeInfo");
-
-infoBtn.onclick=()=>infoPopup.classList.add("show");
-closeInfo.onclick=()=>infoPopup.classList.remove("show");
-
-infoPopup.onclick=(e)=>{
-    if(e.target===infoPopup){
-        infoPopup.classList.remove("show");
+        popup.classList.remove("show");
     }
+
 };
-</script>
 
+// פתיחה ידנית
+infoBtn.onclick = ()=>{
 
-<div class="dots"></div>
-</body>
+    popup.classList.add("show");
 
+}; 
+function menu() {   
+        window.location.href = "menu.html";
+}
+</script> 
 <style>
-  * {
-    box-sizing: border-box;
-  }
+    .title{
+        top: 12%;
+        width:30vw;
+        right: 50%;
+    }
 
-  body {
-    margin: 0;
-    overflow-x: hidden;
-    margin: 0;
-    min-height: 100vh;
-    background-image: url("assets/backgrounds/bg1.png");
-    background-size: 100vw 100vh;
-    background-position: center;
-    background-repeat: repeat-y;
-    direction: rtl;
-    font-family: "secular";
+ 
+.popupOverlay{
 
-  }
+    position:fixed;
+    inset:0;
 
+    background:rgba(0,0,0,.6);
 
+    display:none;
 
-  .title {
-    top: 20vh;
-    width: min(70vw, 320px);
-  }
+    justify-content:center;
+    align-items:center;
 
-:root{
-
-    --menuColor:#EFFEFF;
-    --menuOpenColor:#88b84d;
-
-    --menuWidth:55vw;
-
+    z-index:9999;
 }
 
-/* ================= MENU BUTTON ================= */
+.popupOverlay.show{
+    display:flex;
+}
 
-.menuBtn{
+/* קופסה */
+
+.popupBox{
+
+    position:relative;
+
+    width:min(85vw,420px);
+
+    animation:popup .35s ease;
+}
+
+/* תמונת הרקע */
+
+.popupBg{
+
+    width:100%;
+    display:block;
+}
+
+/* הטקסט */
+
+.popupText{
 
     position:absolute;
 
-    top:8vh;
-    right:2vw;
+    top:15%;
+    left:12%;
+    right:12%;
 
-    width:60px;
-    height:60px;
+    color:#341a42;
 
-    border:none;
+    font-size:1.1rem;
+direction: rtl;
+    font-weight: 600;
+    text-align:center;
 
-    background:none;
+    line-height:1.6;
+}
 
+/* כפתור סגירה */
+
+.closePopup{
+
+    position:absolute;
+
+    width:50px;
+
+    bottom:43%;
+    left:50%;
+
+    transform:translateX(-50%);
+width: 20vw;
     cursor:pointer;
 
-    z-index:1001;
+    transition:.2s;
 }
 
-#menuIcon{
+.closePopup:active{
 
-    width:100%;
-    height:100%;
-
-    fill:var(--menuColor);
-
-    transition:.3s;
+    transform:translateX(-50%) scale(.9);
 }
 
-.menuBtn.active #menuIcon{
+/* כפתור מידע קטן */
 
-    fill:var(--menuOpenColor);
-    
-}
-
-.menuBtn.active{
-    display: none;
-}
-
-
-#sideMenu{
+#infoBtn{
 
     position:fixed;
 
-    top:0;
-    right:-100%;
+    left:5px;
 
-    width:var(--menuWidth);
+    bottom:10px;
 
-    height:100vh;
+    width:38px;
+    height:38px;
 
-    background:rgba(245,250,248,.95);
+    border:none;
 
-    backdrop-filter:blur(12px);
+    border-radius:50%;
 
-    border-radius:30px 0 0 30px;
+    background: none;
+
+    color:rgb(84, 7, 88);
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+    /* box-shadow:0 5px 15px rgba(0,0,0,.25); */
+}
+
+@keyframes popup{
+
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+
+}
+
+.menuBtn{
+    position: fixed;
+    top: 45px;
+    right: 15px;
+
+    width:45px;
+    height:45px;
+
+    border:none;
+    background:none;
+
+    border-radius:50%;
 
     display:flex;
+    align-items:center;
+    justify-content:center;
 
-    flex-direction:column;
+    cursor:pointer;
 
-    padding-top:12vh;
+    z-index:5000;
 
-    transition:.4s ease;
-
-    z-index:100000;
-}
-
-#sideMenu.active{
-
-    right:0;
-}
-
-#sideMenu a{
-
-    text-decoration:none;
-
-    color:#5d6940;
-
-    font-size:1.8rem;
-
-    font-weight: 580;
-
-    padding:2vh 2vw;
-
-    border-bottom:1px solid rgba(0,0,0,.08);
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
 
     transition:.25s;
 }
 
-#sideMenu a:hover{
 
-    background:#dce7d0;
+.menuBtn:hover{
+    transform:scale(1.08);
 }
 
- .categoryScreen{
-    position:absolute;
-    top:35%;
-    width:100%;
+.deviceSelector{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+.deviceBtn{
+
+    width:140px;
+padding-bottom: 10px;
+padding-top: 10px;
+
+    border:none;
+
+    border-radius:40px;
+
+    padding-top:0px;
+
+    font-size:1.4rem;
+
+    background:#d6c5eb;
+
+    color:#431046;
+    font-family: "yarden";
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.deviceBtn.active{
+
+    background:#431046;
+
+    color:white;
+}
+
+.menuBtn:active{
+    transform:scale(.9);
+}
+
+
+.menuBtn svg{
+    pointer-events:none;
+}
+
+.topicsContainer{
+
+    margin-top:38vh;
+margin-bottom: 10vh;
     display:flex;
     flex-direction:column;
+
     align-items:center;
-    gap:30px;
-}
 
-.categoryBtn{
-    width:45vw;
-    cursor:pointer;
-}
-.viewer{
-    display:none;
-
-    position:absolute;
-    top:65%;
-    left:50%;
-    transform:translate(-50%,-50%);
-
-    width:70vw;
-    height:70vh;
-
-    overflow-y:auto;
-    scroll-snap-type:y mandatory;
+    gap:15px;
 
 }
 
-.viewer::-webkit-scrollbar{
-    display:none;
+
+.topicsContainer button{
+
+    width:65vw;
+
+    padding:10px;
+    
+
+    background:#431046b7;
+    color:#e2d6fc;
+
+    text-align:center;
+
+    border:none;
+
+    font-family:yarden;
+
+    border-radius:18px;
+
+    font-size:1.9rem;
+
+    font-weight:500;
+
+direction: rtl;    cursor:pointer;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.356);
+
+    transition:.2s;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.viewer img{
-    width:100%;
-    height:80vh;
+.topicsContainer button{
+    padding-top:7px;
+    padding-bottom:13px;
+}
+.topicsContainer .topicBtn img{
+
+    width:10vh;
+    height:12vw;
 
     object-fit:contain;
 
-    scroll-snap-align:start;
-
-    background: #effeff00;
+    flex-shrink:0;
 }
 
-.categoryBtn{
-    width:45vw;
-    cursor:pointer;
+.topicsContainer button:active{
 
-    transition:transform .18s ease,
-               filter .18s ease,
-               opacity .25s ease;
+    transform:scale(.95);
+
 }
 
-.categoryBtn:hover{
-    transform:scale(1.05);
-}
+.topicsContainer .topicBtn span{
 
-.categoryBtn:active{
-    transform:scale(0.92);
-}
+    flex:1;
 
-.categoryBtn.clicked{
-    transform:scale(0.88);
-    opacity:0;
-    filter:blur(4px);
+    text-align:right;
 }
 
 
-.infoBtn{
+
+/* הפופאפ של הנושא */
+
+.topicOverlay{
+
     position:fixed;
-    top:92%;
-    left:15px;
-    width:28px;
-    height:28px;
-    border-radius:50%;
-    border:none;
-    background:#516b42;
-    color:white;
-    font-size:1.5rem;
-    z-index:200000;
-}
 
-.infoPopup{
-    position:fixed;
     inset:0;
-    background:rgba(0,0,0,.4);
+
+    background:rgba(0,0,0,.65);
+
     display:none;
-    justify-content:center;
+
     align-items:center;
-    z-index:3000;
+    justify-content:center;
+
+    z-index:99999;
+
 }
 
-.infoPopup.show{
+
+
+.topicOverlay.show{
+
     display:flex;
+
 }
 
-.infoBox{
-    background:#effeffc5;
-    padding:10px;
-    border-radius:20px;
-    width:60%;
-    max-width:300px;
-    color: #516b42;
+
+
+.topicBox{
+
+    width:70vw;
+    max-width:500px;
+
+    height:75vh;
+
+    background:#f0e9fffc;
+
+    border-radius:25px;
+
+    padding:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    direction:rtl;
+
+    animation:popup .3s ease;
+
+}
+
+
+
+#topicTitle{
+
     text-align:center;
-    font-size: 1.2rem;
-    
+
+    color:#360d38;
+width: 70vw;
+    margin-top:5px;
+
+    font-size:3rem;
+
+    /* היטל */
+    text-shadow:
+        2px 3px 5px rgba(0,0,0,0.25);
+
 }
 
-#closeInfo{
-      background:#effeffc5;
-    padding:2px;
-    border-radius:20px;
-    width:60%;
-    max-width:300px;
-    color: #516b42;
-    border: none;
-    text-align:center;
-     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    font-size: 1.8rem;
-    font-weight: 600;
-    font-family: secular;
+
+
+.topicContent{
+
+    overflow-y:auto;
+
+    flex:1;
+
+    text-align:right;
+
+    line-height:1.2;
+
+    font-size:1.2rem;
+
 }
 
+
+
+.topicContent h1{
+font-size: 1.9rem;
+    color:#431046;
+
+}
+
+
+.topicContent h2{
+font-size: 1.6rem;
+    color:#89458e;
+
+}
+
+
+
+.backBtn{
+
+    margin-top:3px;
+padding-top: 4px;
+padding-bottom: 10px;
+    border:none;
+
+    border-radius:12px;
+
+    background:#431046;
+left:0%;
+    color:white;
+
+    font-size:1.1rem;
+font-family: yarden;
+    cursor:pointer;
+width: 35vw;
+}
 </style>
 </html>
