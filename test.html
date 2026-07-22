@@ -2334,8 +2334,24 @@ function createDragQuestion(q){
     answersContainer.innerHTML="";
 
 
+    let draggedItem=null;
+    let ghost=null;
+
+
+
+
     const boxes=document.createElement("div");
+
     boxes.className="dropAreas";
+
+
+
+    const warehouse=document.createElement("div");
+
+    warehouse.className="warehouse";
+
+
+
 
 
     q.boxes.forEach(box=>{
@@ -2343,45 +2359,45 @@ function createDragQuestion(q){
 
         let area=document.createElement("div");
 
+
         area.className="dropBox";
+
 
         area.innerHTML=
         `<h3>${box.title}</h3>`;
 
 
-        area.dataset.correct =
+        area.dataset.correct=
         JSON.stringify(box.correct);
 
 
 
+
+        // מחשב
+
         area.ondragover=(e)=>{
+
             e.preventDefault();
+
         };
 
 
 
         area.ondrop=(e)=>{
 
+
             e.preventDefault();
 
 
-            let value =
+            let value=
             e.dataTransfer.getData("text");
+
 
 
             addPlacedItem(area,value);
 
 
-
-            let original =
-            document.querySelector(
-            `.dragItem[data-value="${value}"]`
-            );
-
-
-            if(original){
-                original.remove();
-            }
+            removeOriginal(value);
 
         };
 
@@ -2389,7 +2405,9 @@ function createDragQuestion(q){
 
         boxes.appendChild(area);
 
+
     });
+
 
 
 
@@ -2397,11 +2415,6 @@ function createDragQuestion(q){
 
 
 
-
-
-    const warehouse=document.createElement("div");
-
-    warehouse.className="warehouse";
 
 
 
@@ -2421,14 +2434,21 @@ function createDragQuestion(q){
 
 
 
+
+
+
+
     function createItem(value,parent){
 
 
         let div=document.createElement("div");
 
+
         div.className="dragItem";
 
+
         div.innerHTML=value;
+
 
         div.dataset.value=value;
 
@@ -2437,21 +2457,33 @@ function createDragQuestion(q){
 
 
 
+
+        // מחשב
+
         div.ondragstart=(e)=>{
+
 
             e.dataTransfer.setData(
                 "text",
                 value
             );
 
+
         };
 
 
 
+
+        // מובייל
+
         div.addEventListener(
-        "touchstart",
-        startTouch
+            "touchstart",
+            startDrag,
+            {
+                passive:false
+            }
         );
+
 
 
         parent.appendChild(div);
@@ -2462,7 +2494,160 @@ function createDragQuestion(q){
 
 
 
+
+
+
+
+    function startDrag(e){
+
+
+        e.preventDefault();
+
+
+        draggedItem=this;
+
+
+
+        ghost=this.cloneNode(true);
+
+
+        ghost.className="dragGhost";
+
+
+        document.body.appendChild(ghost);
+
+
+
+        this.classList.add(
+            "dragging"
+        );
+
+
+
+        moveGhost(
+            e.touches[0]
+        );
+
+
+
+        document.addEventListener(
+            "touchmove",
+            moveDrag,
+            {
+                passive:false
+            }
+        );
+
+
+        document.addEventListener(
+            "touchend",
+            endDrag
+        );
+
+    }
+
+
+
+
+
+
+
+    function moveDrag(e){
+
+
+        e.preventDefault();
+
+
+        moveGhost(
+            e.touches[0]
+        );
+
+    }
+
+
+
+
+
+
+
+    function moveGhost(touch){
+
+
+        ghost.style.left =
+        touch.clientX -
+        ghost.offsetWidth/2
+        +"px";
+
+
+
+        ghost.style.top =
+        touch.clientY -
+        ghost.offsetHeight/2
+        +"px";
+
+
+    }
+
+
+
+
+
+
+
+
+    function endDrag(e){
+
+
+        let touch=e.changedTouches[0];
+
+
+
+        let target=
+        document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+
+
+        let box=
+        target?.closest(".dropBox");
+
+
+
+        if(box){
+
+
+            addPlacedItem(
+                box,
+                draggedItem.dataset.value
+            );
+
+
+            removeOriginal(
+                draggedItem.dataset.value
+            );
+
+
+        }
+
+
+
+        cleanup();
+
+
+    }
+
+
+
+
+
+
+
+
+
     function addPlacedItem(box,value){
+
 
 
         let p=document.createElement("div");
@@ -2477,52 +2662,121 @@ function createDragQuestion(q){
         p.dataset.value=value;
 
 
-
-        // מחשב - אפשר להזיז שוב
-
         p.draggable=true;
 
 
-      p.ondragstart=(e)=>{
-
-    e.dataTransfer.setData(
-        "text",
-        value
-    );
-
-    setTimeout(()=>{
-
-        p.remove();
-
-    },100);
-
-};
 
 
+        // מחשב
 
-        // מובייל - אפשר להזיז שוב
+        p.ondragstart=(e)=>{
 
-       p.addEventListener(
-"touchstart",
-(e)=>{
 
-    draggedItem = p;
+            e.dataTransfer.setData(
+                "text",
+                value
+            );
 
-    startParent = p.parentElement;
 
-    p.classList.add("dragging");
+            p.remove();
 
-    p.style.position="fixed";
+        };
 
-    p.style.zIndex="9999";
 
-}
-);
+
+
+        // מובייל
+
+        p.addEventListener(
+            "touchstart",
+            startDrag,
+            {
+                passive:false
+            }
+        );
+
 
 
         box.appendChild(p);
 
+
     }
+
+
+
+
+
+
+
+
+
+    function removeOriginal(value){
+
+
+        let item=document.querySelector(
+            `.dragItem[data-value="${value}"]`
+        );
+
+
+        if(item){
+
+            item.remove();
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+    function cleanup(){
+
+
+        if(draggedItem){
+
+            draggedItem.classList.remove(
+                "dragging"
+            );
+
+        }
+
+
+
+        if(ghost){
+
+            ghost.remove();
+
+            ghost=null;
+
+        }
+
+
+
+        document.removeEventListener(
+            "touchmove",
+            moveDrag
+        );
+
+
+        document.removeEventListener(
+            "touchend",
+            endDrag
+        );
+
+
+
+        draggedItem=null;
+
+
+    }
+
+
+
+
 
 
 
@@ -2535,430 +2789,513 @@ function createDragQuestion(q){
     nextBtn.onclick=()=>{
 
 
-    let totalCorrect = 0;
-    let totalAnswers = 0;
+        let totalCorrect=0;
 
-
-    document.querySelectorAll(".dropBox")
-    .forEach(box=>{
-
-
-        let correct =
-        JSON.parse(box.dataset.correct);
-
-
-        let placed =
-        [...box.querySelectorAll(".placedItem")]
-        .map(x=>x.dataset.value);
+        let totalAnswers=0;
 
 
 
-        totalAnswers += correct.length;
+
+        document.querySelectorAll(".dropBox")
+        .forEach(box=>{
 
 
-        correct.forEach(item=>{
+            let correct=
+            JSON.parse(box.dataset.correct);
 
-            if(placed.includes(item)){
-                totalCorrect++;
-            }
+
+
+            let placed=[
+                ...box.querySelectorAll(".placedItem")
+            ]
+            .map(x=>x.dataset.value);
+
+
+
+            totalAnswers+=correct.length;
+
+
+
+            correct.forEach(item=>{
+
+
+                if(placed.includes(item)){
+
+                    totalCorrect++;
+
+                }
+
+            });
+
 
         });
+
+
+
+
+        score+=Math.round(
+            (totalCorrect/totalAnswers)*10
+        );
+
+
+
+        nextQuestion();
+
+    };
+
+
+}
+
+function createSentenceDrag(q){
+
+    answersContainer.innerHTML="";
+
+
+    let draggedItem=null;
+    let floatingItem=null;
+    let warehouse=null;
+
+
+
+    let sentenceBox=document.createElement("div");
+
+    sentenceBox.className="sentence";
+
+
+
+    q.sentence.forEach((text,index)=>{
+
+
+        let textSpan=document.createElement("span");
+
+        textSpan.innerHTML=text+" ";
+
+        sentenceBox.appendChild(textSpan);
+
+
+
+        if(index < q.sentence.length-1){
+
+
+            let drop=document.createElement("span");
+
+
+            drop.className="dropPlace";
+
+            drop.dataset.index=index;
+
+
+
+            // מחשב
+            drop.ondragover=(e)=>{
+
+                e.preventDefault();
+
+            };
+
+
+
+            drop.ondrop=(e)=>{
+
+
+                e.preventDefault();
+
+
+                let value=e.dataTransfer.getData("text");
+
+
+                placeWord(drop,value);
+
+            };
+
+
+
+            sentenceBox.appendChild(drop);
+
+
+        }
 
 
     });
 
 
 
-    let questionScore =
-    (totalCorrect / totalAnswers) * 10;
-
-
-
-    score += Math.round(questionScore);
-
-
-
-    nextQuestion();
-
-};
-
-}
-document.addEventListener("touchmove",function(e){
-
-    if(!draggedItem) return;
-
-
-    e.preventDefault();
-
-
-    let touch=e.touches[0];
-
-
-    draggedItem.style.position="fixed";
-
-    draggedItem.style.zIndex="9999";
-
-
-    draggedItem.style.left =
-    touch.clientX -
-    draggedItem.offsetWidth/2 +"px";
-
-
-    draggedItem.style.top =
-    touch.clientY -
-    draggedItem.offsetHeight/2 +"px";
-
-
-},{passive:false});
+    answersContainer.appendChild(sentenceBox);
 
 
 
 
 
-document.addEventListener("touchend",function(e){
+    warehouse=document.createElement("div");
 
-
-    if(!draggedItem) return;
-
-
-
-    let touch=e.changedTouches[0];
+    warehouse.className="warehouse";
 
 
 
-    let element =
-    document.elementFromPoint(
-        touch.clientX,
-        touch.clientY
-    );
+    q.answers.forEach(word=>{
 
+        addWord(word);
 
-let box =
-element ?
-element.closest(".dropBox, .dropPlace")
-:
-null;
-
-
-if(box && box.classList.contains("dropBox")){
-
-        let value =
-        draggedItem.dataset.value;
+    });
 
 
 
-        let p=document.createElement("div");
-
-
-        p.className="placedItem";
-
-
-        p.innerHTML=value;
-
-
-        p.dataset.value=value;
+    answersContainer.appendChild(warehouse);
 
 
 
-        p.addEventListener(
-        "touchstart",
-        startTouch
-        );
-
-
-        p.draggable=true;
 
 
 
-        p.ondragstart=(e)=>{
+
+    function addWord(word){
+
+
+        let item=document.createElement("div");
+
+
+        item.className="dragItem sentenceItem";
+
+
+        item.innerHTML=word;
+
+
+        item.dataset.value=word;
+
+
+        item.draggable=true;
+
+
+
+        // מחשב
+
+        item.ondragstart=(e)=>{
 
             e.dataTransfer.setData(
                 "text",
-                value
-            );
-
-            p.remove();
-
-        };
-
-
-
-        box.appendChild(p);
-
-
-
-if(draggedItem !== p){
-
-    draggedItem.remove();
-
-}
-else if(box && box.classList.contains("dropPlace")){
-
-
-box.innerHTML =
-draggedItem.dataset.value;
-
-
-box.dataset.value =
-draggedItem.dataset.value;
-
-
-draggedItem.remove();
-
-
-}
-    }
-    else{
-
-
-        draggedItem.style.position="";
-        draggedItem.style.left="";
-        draggedItem.style.top="";
-
-
-    }
-
-
-
-    draggedItem.classList.remove(
-        "dragging"
-    );
-
-
-    draggedItem=null;
-
-
-
-});
-
-function createSentenceDrag(q){
-
-
-answersContainer.innerHTML="";
-
-
-
-let sentenceBox=document.createElement("div");
-
-sentenceBox.className="sentence";
-
-
-
-q.sentence.forEach((text,index)=>{
-
-
-    let span=document.createElement("span");
-
-    span.innerHTML=text+" ";
-
-
-    sentenceBox.appendChild(span);
-
-
-
-    if(index < q.sentence.length-1){
-
-
-        let place=document.createElement("span");
-
-
-        place.className="dropPlace";
-
-
-        place.dataset.index=index;
-
-
-        place.innerHTML="";
-
-
-        place.ondragover=(e)=>{
-
-            e.preventDefault();
-
-        };
-
-
-place.ondrop=(e)=>{
-
-    e.preventDefault();
-
-    let value =
-    e.dataTransfer.getData("text");
-
-
-    // אם כבר יש מילה במקום - מחזירים למחסן
-    if(place.dataset.value){
-
-        let oldValue = place.dataset.value;
-
-
-        let oldItem=document.createElement("div");
-
-        oldItem.className="dragItem sentenceItem";
-
-        oldItem.innerHTML=oldValue;
-
-        oldItem.dataset.value=oldValue;
-
-        oldItem.draggable=true;
-
-
-        oldItem.ondragstart=(e)=>{
-
-            e.dataTransfer.setData(
-                "text",
-                oldValue
+                word
             );
 
         };
 
 
-        warehouse.appendChild(oldItem);
 
-    }
+        // מובייל
 
-
-
-    // מכניסים את המילה החדשה
-    place.innerHTML=value;
-
-    place.dataset.value=value;
-
-
-
-    // מוחקים מהמחסן את המילה החדשה
-    let item =
-    document.querySelector(
-    `.sentenceItem[data-value="${value}"]`
-    );
-
-
-    if(item)
-        item.remove();
-
-
-};
-
-
-        sentenceBox.appendChild(place);
-
-
-
-    }
-
-
-
-});
-
-
-
-answersContainer.appendChild(sentenceBox);
-
-
-
-
-// מחסן
-
-let warehouse=document.createElement("div");
-
-warehouse.className="warehouse";
-
-
-
-q.answers.forEach(answer=>{
-
-
-    let item=document.createElement("div");
-
-
-    item.className="dragItem sentenceItem";
-
-
-    item.innerHTML=answer;
-
-
-    item.dataset.value=answer;
-
-
-    item.draggable=true;
-
-
-
-    item.ondragstart=(e)=>{
-
-
-        e.dataTransfer.setData(
-            "text",
-            answer
+        item.addEventListener(
+            "touchstart",
+            startTouch,
+            {
+                passive:false
+            }
         );
+
+
+        warehouse.appendChild(item);
+
+    }
+
+
+
+
+
+
+
+
+    function startTouch(e){
+
+
+        e.preventDefault();
+
+
+        draggedItem=this;
+
+
+
+        floatingItem=this.cloneNode(true);
+
+
+        floatingItem.classList.add(
+            "floatingDrag"
+        );
+
+
+        document.body.appendChild(
+            floatingItem
+        );
+
+
+
+        this.classList.add(
+            "dragging"
+        );
+
+
+
+        moveFloating(
+            e.touches[0]
+        );
+
+
+
+        document.addEventListener(
+            "touchmove",
+            moveTouch,
+            {
+                passive:false
+            }
+        );
+
+
+        document.addEventListener(
+            "touchend",
+            endTouch
+        );
+
+
+    }
+
+
+
+
+
+
+
+    function moveTouch(e){
+
+
+        e.preventDefault();
+
+
+        moveFloating(
+            e.touches[0]
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+    function moveFloating(touch){
+
+
+        floatingItem.style.left =
+        touch.clientX -
+        floatingItem.offsetWidth/2
+        +"px";
+
+
+
+        floatingItem.style.top =
+        touch.clientY -
+        floatingItem.offsetHeight/2
+        +"px";
+
+
+    }
+
+
+
+
+
+
+
+
+    function endTouch(e){
+
+
+        let touch=e.changedTouches[0];
+
+
+
+        let target=document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+
+
+        let drop=target?.closest(
+            ".dropPlace"
+        );
+
+
+
+        if(drop){
+
+
+            placeWord(
+                drop,
+                draggedItem.dataset.value
+            );
+
+
+        }
+
+
+
+        draggedItem.classList.remove(
+            "dragging"
+        );
+
+
+        floatingItem.remove();
+
+
+        floatingItem=null;
+
+
+        draggedItem=null;
+
+
+
+        document.removeEventListener(
+            "touchmove",
+            moveTouch
+        );
+
+
+        document.removeEventListener(
+            "touchend",
+            endTouch
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+
+    function placeWord(drop,value){
+
+
+
+        // מחזיר מילה שהייתה במקום
+
+        if(drop.dataset.value){
+
+
+            addWord(
+                drop.dataset.value
+            );
+
+
+        }
+
+
+
+        drop.innerHTML=value;
+
+
+        drop.dataset.value=value;
+
+
+
+        let old=document.querySelector(
+            `.sentenceItem[data-value="${value}"]`
+        );
+
+
+        if(old){
+
+            old.remove();
+
+        }
+
+
+
+        drop.classList.add(
+            "placed"
+        );
+
+
+        setTimeout(()=>{
+
+
+            drop.classList.remove(
+                "placed"
+            );
+
+
+        },250);
+
+
+    }
+
+
+
+
+
+
+
+
+
+    nextBtn.style.display="block";
+
+
+
+    nextBtn.onclick=()=>{
+
+
+        let answers=[];
+
+
+
+        document.querySelectorAll(
+            ".dropPlace"
+        )
+        .forEach(place=>{
+
+
+            answers.push(
+                place.dataset.value || ""
+            );
+
+
+        });
+
+
+
+        let correct=0;
+
+
+
+        q.correct.forEach(
+            (item,index)=>{
+
+
+                if(answers[index]===item){
+
+                    correct++;
+
+                }
+
+            }
+        );
+
+
+
+        score += Math.round(
+            (correct/q.correct.length)*10
+        );
+
+
+
+        nextQuestion();
 
 
     };
 
-
-
-    item.addEventListener(
-        "touchstart",
-        startTouch
-    );
-
-
-
-    warehouse.appendChild(item);
-
-
-});
-
-
-
-answersContainer.appendChild(warehouse);
-
-
-
-
-// בדיקה
-
-nextBtn.style.display="block";
-
-
-nextBtn.onclick=()=>{
-
-
-let answers=[];
-
-
-document.querySelectorAll(".dropPlace")
-.forEach(place=>{
-
-
-    answers.push(
-        place.dataset.value || ""
-    );
-
-
-});
-
-
-let correctCount=0;
-
-
-q.correct.forEach((item,index)=>{
-
-    if(answers[index]===item){
-        correctCount++;
-    }
-
-});
-
-
-score += Math.round(
-(correctCount / q.correct.length) * 10
-);
-
-
-nextQuestion();
-
- }
 
 }
 // ===============================
