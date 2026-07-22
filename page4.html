@@ -112,6 +112,11 @@
         infoPopup.classList.add("show");
         localStorage.setItem("infoSeen", "true");
     }
+    const img = document.getElementById("baseImage");
+
+img.onload = () => {
+    resizeCanvas();
+};
 });
   const menuBtn =
     document.getElementById("menuBtn");
@@ -148,22 +153,16 @@ const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
 
+    const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
 
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-
-    canvas.width = w * ratio;
-    canvas.height = h * ratio;
-
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
 
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.imageSmoothingEnabled = true;
 }
 
 resizeCanvas();
@@ -175,12 +174,9 @@ let size = 5;
 let erase = false;
 
 function getPos(e) {
-
-    const rect = canvas.getBoundingClientRect();
-
     return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        x: e.offsetX,
+        y: e.offsetY
     };
 }
 
@@ -550,7 +546,7 @@ infoPopup.onclick = e => {
 
     width:80vw;
 
-    height:55vh;
+    height:65vh;
 
     border-radius:20px;
 

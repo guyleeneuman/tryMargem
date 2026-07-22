@@ -52,402 +52,52 @@
       <a href="page4.html">צייר על המרגמה</a>
 
     </nav>
+   <div class="vehicleContainer">
 
-<section id="vehicleScreen"
-class="screen">
+    <img src="assets/titles/nag.png"
+         class="vehicleBtn"
+         id="nagmashBtn">
 
-
-<h1>
-בחר כלי
-</h1>
-
-
-
-<div class="vehicleContainer">
-
-
-
-<div class="vehicleCard"
-onclick="selectVehicle('נגמש')">
-
-
-<img src="assets/elements/nagmash.png">
-
-
-<h2>
-נגמ"ש
-</h2>
-
+    <img src="assets/titles/ha.png"
+         class="vehicleBtn"
+         id="hummerBtn">
 
 </div>
 
 
+<div id="detailsPopup" class="popup">
 
-
-<div class="vehicleCard"
-onclick="selectVehicle('האמר')">
-
-
-<img src="assets/elements/hummer.png">
-
-
-<h2>
-האמר
-</h2>
-
-
-</div>
-
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-<!-- ======================
-בחירת נושא
-======================= -->
-
-
-<section id="topicScreen"
-class="screen hidden">
-
-
-<h1 id="vehicleTitle"></h1>
-
-
-<div id="topicsContainer">
-
-</div>
-
-
-</section>
-
-
-
-
-
-<!-- ======================
-פרטים לפני מבחן
-======================= -->
-
-
-<section id="detailsScreen"
-class="screen hidden">
-
-
-<div class="formBox">
-
-
-<h2>
-פרטים לפני מבחן
-</h2>
-
-
-<input id="fullName"
-placeholder="שם מלא">
-
-
-<input id="battalion"
-placeholder="מספר גדוד">
-
-
-<button onclick="startTest()">
-
-התחל מבחן
-
+    <div class="popupBox">
+        <button id="closeDetails" class="closeDetails">
+    ×
 </button>
-
-
-</div>
-
-
-</section>
+    </button>
+        <h2>פרטים אישיים</h2>
 
 
 
 
-
-<!-- ======================
-מבחן
-======================= -->
-
-
-<section id="testScreen"
-class="screen hidden">
+        <input
+        type="text"
+        id="fullName"
+        placeholder="שם מלא">
 
 
-<div id="questionContainer">
-
-</div>
-
-
-<button id="nextBtn"
-onclick="nextQuestion()">
-
-הבא
-
-</button>
+        <input
+        type="number"
+        id="battalion"
+        placeholder="מספר גדוד">
 
 
-</section>
+        <button id="saveDetails">
+            התחלת מבחן
+        </button>
 
-
-
-
-
-<!-- ======================
-תוצאה
-======================= -->
-
-
-<section id="resultScreen"
-class="screen hidden">
-
-
-<div class="resultBox">
-
-
-<h1>
-התוצאה שלך
-</h1>
-
-
-<h2 id="scoreText"></h2>
-
-
-<button id="retryBtn">
-
-מענה חוזר
-
-</button>
-
+    </div>
 
 </div>
 
-
-</section>
-
-
-
-<script>
-
-
-// מידע
-
-window.addEventListener("load",()=>{
-
-
-let seen =
-localStorage.getItem("hobimInfo");
-
-
-if(!seen){
-
-infoPopup.classList.add("show");
-
-localStorage.setItem(
-"hobimInfo",
-"true"
-);
-
-}
-
-
-});
-
-
-
-
-
-// תפריט
-
-
-const menuBtn =
-document.getElementById("menuBtn");
-
-
-const sideMenu =
-document.getElementById("sideMenu");
-
-
-const overlay =
-document.getElementById("overlay");
-
-
-
-menuBtn.onclick=()=>{
-
-
-sideMenu.classList.toggle("active");
-
-overlay.classList.toggle("active");
-
-
-};
-
-
-
-overlay.onclick=()=>{
-
-
-sideMenu.classList.remove("active");
-
-overlay.classList.remove("active");
-
-
-};
-
-
-
-
-
-// מידע
-
-
-infoBtn.onclick=()=>{
-
-infoPopup.classList.add("show");
-
-};
-
-
-closeInfo.onclick=()=>{
-
-infoPopup.classList.remove("show");
-
-};
-
-
-infoPopup.onclick=e=>{
-
-if(e.target==infoPopup)
-
-infoPopup.classList.remove("show");
-
-
-};
-
-
-
-
-
-// =====================
-// מערכת בחירה
-// =====================
-
-
-let selectedVehicle="";
-
-
-let selectedTopic="";
-
-
-
-const topics={
-
-
-"נגמש":[
-
-"בטיחות",
-"טעינה",
-"פריקה",
-"ירי"
-
-],
-
-
-"האמר":[
-
-"בטיחות",
-"תפעול",
-"נהיגה",
-"ירי"
-
-]
-
-
-};
-
-
-
-
-function selectVehicle(vehicle){
-
-
-selectedVehicle=vehicle;
-
-
-vehicleScreen.classList.add("hidden");
-
-
-topicScreen.classList.remove("hidden");
-
-
-
-vehicleTitle.innerHTML=
-"מבחני "+vehicle;
-
-
-
-let box=
-document.getElementById(
-"topicsContainer"
-);
-
-
-box.innerHTML="";
-
-
-
-topics[vehicle].forEach(topic=>{
-
-
-let btn=document.createElement("button");
-
-
-btn.className="topicBtn";
-
-
-btn.innerHTML=topic;
-
-
-
-btn.onclick=()=>{
-
-
-selectedTopic=topic;
-
-
-topicScreen.classList.add("hidden");
-
-
-detailsScreen.classList.remove("hidden");
-
-
-};
-
-
-box.appendChild(btn);
-
-
-
-});
-
-
-
-}
-
-
-
-</script>
-
-זה החלק הראשון.
+<div id="testsContainer"></div>
 </body>
 <script>
        window.addEventListener("load", () => {
@@ -503,6 +153,164 @@ infoPopup.onclick = e => {
         infoPopup.classList.remove("show");
     }
 };
+const testsContainer = document.getElementById("testsContainer");
+
+const popup = document.getElementById("detailsPopup");
+
+const saveBtn = document.getElementById("saveDetails");
+const closeDetails = document.getElementById("closeDetails");
+const vehiclesContainer = document.getElementById("vehiclesContainer");
+const nagmashBtn = document.getElementById("nagmashBtn");
+const hummerBtn = document.getElementById("hummerBtn");
+let selectedVehicle = "";
+let selectedTest = "";
+let selectedFile = "";
+
+const tests = {
+    nagmash: [
+        {
+            name: "קשת",
+            file: "test.html"
+        },
+        {
+            name: "פצמר אינרטי",
+            file: "test.html"
+        },
+        {
+            name: "עוקץ פלדה",
+            file: "test.html"
+        },
+        {
+            name: "נגמש",
+            file: "test.html"
+        },
+        {
+            name: "אלפא",
+            file: "test.html"
+        },
+    ],
+
+    hamer: [
+        {
+            name: "האמר",
+            file: "test.html"
+        },
+        {
+            name: "חנית",
+            file: "test.html"
+        },
+        {
+            name: "רגל עץ",
+            file: "test.html"
+        },
+        {
+            name: "פצמר אינרטי",
+            file: "test.html"
+        },
+        {
+            name: "עוקץ פלדה",
+            file: "test.html"
+        },
+    ]
+};
+
+closeDetails.onclick = () => {
+    popup.classList.remove("show");
+};
+function showTests(vehicle){
+
+    selectedVehicle = vehicle;
+
+    testsContainer.innerHTML = "";
+
+    // מקטין את הכפתור שנבחר
+    const selectedBtn =
+        vehicle === "nagmash" ? nagmashBtn : hummerBtn;
+
+    const otherBtn =
+        vehicle === "nagmash" ? hummerBtn : nagmashBtn;
+
+    selectedBtn.classList.add("selectedVehicle");
+    otherBtn.style.display = "none";
+
+    // כפתור חזרה
+    const backBtn = document.createElement("button");
+    backBtn.className = "backVehicleBtn";
+    backBtn.innerText = "←";
+
+    backBtn.onclick = () => {
+
+        testsContainer.innerHTML = "";
+
+        selectedBtn.classList.remove("selectedVehicle");
+        otherBtn.style.display = "flex";
+
+    };
+
+    testsContainer.appendChild(backBtn);
+
+    tests[vehicle].forEach(test=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "testBtn";
+        btn.textContent = test.name;
+
+        btn.onclick = ()=>{
+
+            selectedTest = test.name;
+            selectedFile = test.file;
+
+            popup.classList.add("show");
+
+        };
+
+        testsContainer.appendChild(btn);
+
+    });
+
+}
+
+document.getElementById("nagmashBtn").onclick = () => {
+    showTests("nagmash");
+};
+
+document.getElementById("hummerBtn").onclick = () => {
+    showTests("hamer");
+};
+
+saveBtn.onclick = () => {
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const battalion = document.getElementById("battalion").value.trim();
+
+    if (!fullName || !battalion) {
+        alert("יש למלא את כל הפרטים");
+        return;
+    }
+
+
+    sessionStorage.setItem("fullName", fullName);
+
+    sessionStorage.setItem("battalion", battalion);
+
+    sessionStorage.setItem("vehicle", selectedVehicle);
+
+    sessionStorage.setItem("test", selectedTest);
+
+
+    sessionStorage.setItem(
+        "testId",
+        selectedTest
+    );
+
+
+    popup.classList.remove("show");
+
+
+    window.location.href = "test.html";
+
+};
 </script>
 
 
@@ -539,7 +347,64 @@ infoPopup.onclick = e => {
     background: transparent;
     z-index: 1000;
   }
+.selectedVehicle{
 
+    position: fixed;
+
+    top: 0%;
+
+    left: 50%;
+
+    transform: translateX(-50%) scale(.8);
+
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    z-index: 1000;
+
+    transition: .35s;
+}
+
+.backVehicleBtn{
+
+    position: absolute;
+
+    top:-50%;
+
+    left: 20px;
+
+    padding: 8px 16px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: rgba(231, 253, 254, 0);
+
+    color: rgba(231,253,254,.9);
+
+    font-family: secular;
+    font-size: 1.6rem;
+    font-weight: 600;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+
+    cursor: pointer;
+
+    z-index: 1001;
+
+    transition: .2s;
+}
+
+.backVehicleBtn:active{
+    transform: scale(.95);
+}
 
   .title {
     top: 20vh;
@@ -777,6 +642,339 @@ infoPopup.onclick = e => {
     font-size: 1.8rem;
     font-weight: 600;
     font-family: secular;
+}
+.vehicleContainer{
+position: absolute;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+top: 30%;
+    gap:30px;
+   left: 50%;
+    transform: translateX(-50%);
+   
+
+}
+
+.vehicleBtn{
+
+    width:200px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.vehicleBtn:hover{
+
+    transform:scale(1.05);
+
+}
+
+#testsContainer{
+
+    position:absolute;
+    top:55%;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:90%;
+
+    display:grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap:18px;
+
+    justify-items:center;
+
+}
+
+.testBtn{
+
+    width:40vw;
+
+    height:50px;
+cursor: pointer;
+    border:none;
+
+    border-radius:15px;
+
+    background:#5d6940a5;
+
+    color:#EFFEFF;
+
+    font-size:1.5rem;
+
+    font-family:secular;
+    
+
+}
+
+.popup{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:5000;
+
+}
+
+.popup.show{
+
+    display:flex;
+
+}
+
+.popupBox{
+
+    width:320px;
+
+    background:#effeffbd;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.popupBox input{
+
+    height:45px;
+
+    border-radius:12px;
+
+    border:1px solid #ccc;
+
+
+    padding:10px;
+    font-family: secular;
+    font-size:18px;
+
+}
+
+.popupBox button{
+
+    height:45px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#5d6940;
+
+    color:#effeff74;
+
+    font-size:20px;
+    font-family: secular;
+
+}
+.selectedVehicle{
+
+    width:40vw;
+
+    display:block;
+
+    margin:auto;
+
+}
+/* #testsContainer{
+
+    position:absolute;
+    top:35%;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+} */
+
+@keyframes slideUp {
+
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+.testBtn{
+
+    animation:slideUp .45s ease forwards;
+    opacity:0;
+
+}
+
+.testBtn:nth-child(1){animation-delay:.05s;}
+.testBtn:nth-child(2){animation-delay:.12s;}
+.testBtn:nth-child(3){animation-delay:.19s;}
+.testBtn:nth-child(4){animation-delay:.26s;}
+.testBtn:nth-child(5){animation-delay:.33s;}
+
+.popup.show{
+
+    display:flex;
+
+}
+
+.popupBox{
+
+    transform:scale(.8);
+    opacity:0;
+    transition:.3s;
+
+}
+
+.popup.show .popupBox{
+
+    transform:scale(1);
+    opacity:1;
+
+}
+
+.backBtn{
+
+    position: absolute;
+top: -30%;
+    width:10vw;
+   left:10%;
+    transform:translateX(-50%);
+    height:4vh;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#effeff;
+
+    color:#516b42;
+
+    font-size:1.1rem;
+
+    font-family:secular;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+.popupBox{
+
+    width:320px;
+
+    background:#effeffbd;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    position:relative; /* חשוב */
+}
+
+
+#closeDetails{
+
+    position:absolute;
+
+    top:10px;
+
+    left:12px;
+
+    width:30px;
+    height:30px;
+
+    border:none;
+    border-radius:60%;
+
+    background:#5d694000;
+
+    color:#5d6940;
+
+    font-size:2rem;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:0;
+
+    /* box-shadow:0 4px 10px rgba(0,0,0,0.2); */
+
+    transition:.2s;
+
+}
+
+
+.closeDetails:active{
+
+    transform:scale(.85);
+
+}
+#saveDetails{
+
+    height:50px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#5d6940;
+
+    color:#EFFEFF;
+
+    font-size:1.5rem;
+
+    font-family:secular;
+
+    cursor:pointer;
+
+    box-shadow:0 6px 15px rgba(0,0,0,.25);
+
+    transition:.2s;
+
+}
+
+
+#saveDetails:active{
+
+    transform:scale(.95);
+
+    background:#3f512d;
+
 }
 </style>
 </html>
